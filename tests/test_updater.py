@@ -1,0 +1,84 @@
+import hashlib
+import io
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+from app import updater
+from app.startup import Startup
+
+
+class UpdateTests(unittest.TestCase):
+    def release(self):
+        name = 'PrinterStudio-Setup-1.4.1-x64.exe'
+        asset = dict(name=name, size=3, browser_download_url=f'https://github.com/{updater.REPOSITORY}/releases/download/v1.4.1/{name}')
+        return dict(tag_name='v1.4.1', draft=False, prerelease=False, assets=[asset]), dict(version='1.4.1', filename=name, size=3, sha256=hashlib.sha256(b'abc').hexdigest())
+
+    def test_numeric_versions_and_invalid_tags(self):
+        self.assertGreater(updater.version_tuple('1.10.0'), updater.version_tuple('v1.9.9'))
+        for value in ('latest', '../1.4.1', '1.4.1-beta', None):
+            with self.assertRaises(ValueError): updater.version_tuple(value)
+
+    def test_manifest_integrity_and_repository_scope(self):
+        release, manifest = self.release()
+        self.assertEqual(updater.validate_manifest(release, manifest)['version'], '1.4.1')
+        release['assets'][0]['browser_download_url'] = 'https://example.org/installer.exe'
+        with self.assertRaises(ValueError): updater.validate_manifest(release, manifest)
+        release, manifest = self.release()
+        for field, value in [('size', -1), ('filename', '../evil.exe'), ('version', '9.0.0'), ('sha256', 'bad')]:
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                updater.validate_manifest(release, dict(manifest, **{field: value}))
+
+    def test_download_checks_hash_and_cleans_partial(self):
+        release, manifest = self.release()
+        update = updater.validate_manifest(release, manifest)
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(updater, 'urlopen', return_value=io.BytesIO(b'abc')):
+                self.assertEqual(updater.download(update, folder, lambda *_: None).read_bytes(), b'abc')
+            for content in (b'ab', b'bad', b'abcd'):
+                with patch.object(updater, 'urlopen', return_value=io.BytesIO(content)), self.assertRaises(ValueError):
+                    updater.download(update, folder, lambda *_: None)
+                self.assertFalse(list(Path(folder).glob('*.part')))
+
+    def test_cancelled_download_never_completes(self):
+        release, manifest = self.release()
+        with tempfile.TemporaryDirectory() as folder, patch.object(updater, 'urlopen', return_value=io.BytesIO(b'abc')):
+            with self.assertRaises(RuntimeError):
+                updater.download(updater.validate_manifest(release, manifest), folder, lambda *_: None, lambda: True)
+            self.assertFalse(list(Path(folder).iterdir()))
+
+    def test_no_update_and_prerelease(self):
+        release, _ = self.release()
+        with patch.object(updater, 'read_json', return_value=release):
+            self.assertIsNone(updater.latest('1.4.1'))
+            self.assertIsNone(updater.latest('1.5.0'))
+            release['prerelease'] = True
+            self.assertIsNone(updater.latest('1.0.0'))
+
+    def test_offline_continues_once(self):
+        opened = []
+        startup = Startup(lambda: opened.append(True), lambda: True)
+        with patch('sys.frozen', True, create=True), patch.object(updater, 'latest', side_effect=OSError('offline')), patch('app.startup.time.sleep'):
+            startup.check()
+        startup.continue_app()
+        self.assertEqual(opened, [True])
+        self.assertIn('offline', startup.state['message'])
+
+    def test_skip_prevents_late_update_prompt(self):
+        startup = Startup(lambda: None, lambda: True)
+        startup.continue_app()
+        with patch('sys.frozen', True, create=True), patch.object(updater, 'latest', return_value={'version':'1.4.1'}):
+            startup.check()
+        self.assertIsNone(startup.update)
+
+    def test_install_not_exposed_after_splash(self):
+        startup = Startup(lambda: None, lambda: True)
+        startup.state['status'] = 'available'
+        startup.update = {'version':'1.4.1'}
+        startup.continue_app()
+        with patch('app.startup.threading.Thread') as thread:
+            startup.install_update()
+            thread.assert_not_called()
+
+    def test_powershell_literal_quotes(self):
+        self.assertEqual(updater.ps_literal("C:/O'Brien/$test.exe"), "'C:/O''Brien/$test.exe'")

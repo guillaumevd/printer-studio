@@ -1,0 +1,11 @@
+Printer Studio 1.3 — Windows x64
+
+Python and the application's dependencies are included. No separate Python installation is required.
+
+If Microsoft Edge WebView2 Runtime is missing, Setup installs it using Microsoft's bootstrapper. An Internet connection is required for that step. Normal application use is local.
+
+Install the printer's Windows USB driver separately before connecting it. This tool targets the converted DI-RS1 with its original DI recovery bootloader, not an original DNP printer.
+
+Close Printer Studio before installing an update. Never install or uninstall during a firmware transfer. Setup does not automatically close running applications.
+
+Operation logs are kept in %LOCALAPPDATA%\Printer Studio\logs and are preserved on uninstall.
