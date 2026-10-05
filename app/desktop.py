@@ -72,6 +72,7 @@ def show_window(url, can_close, startup=False, on_ready=None, update_test=None):
         url + "/splash.html" if startup else url,
         width=400 if startup else 1320, height=500 if startup else 940,
         min_size=(400, 500) if startup else (850, 650),
+        hidden=startup,
         frameless=startup, resizable=not startup, easy_drag=startup,
         background_color="#f5f6f3", text_select=True, js_api=SplashAPI(controller) if controller else None)
     window.events.before_show += lambda: set_icon(window)
@@ -81,8 +82,8 @@ def show_window(url, can_close, startup=False, on_ready=None, update_test=None):
             scale = window.native.scale_factor
             window.resize(round(400 * scale), round(500 * scale))
             def apply_size():
-                # WinForms initially reserves a title bar even for a frameless view.
-                # Center the final 400 x 500 logical-pixel client area after DPI scaling.
+                # Keep the splash hidden until its final size and position are set.
+                # WinForms completes DPI scaling during hidden initialization.
                 window.native.CenterToScreen()
             if window.native.InvokeRequired:
                 window.native.Invoke(Action(apply_size))
@@ -109,6 +110,7 @@ def show_window(url, can_close, startup=False, on_ready=None, update_test=None):
             started.set()
             if os.name == "nt":
                 size_splash()
+            window.show()
             threading.Thread(target=controller.check, daemon=True).start()
             if update_test:
                 def exercise():

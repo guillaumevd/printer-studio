@@ -1,1 +1,3 @@
 .printer-visual{height:245px}.printer-visual img{width:340px;height:245px}.visual-orbit{width:260px;height:210px;background:#f2f5ed;transform:none}.visual-caption{bottom:0}.brand-icon{font-size:0;background:transparent}.brand-icon::after{content:"";width:40px;height:40px;background:url('/assets/printer-icon.svg') center/contain no-repeat}@media(max-width:760px){.printer-visual{height:245px}.printer-visual img{height:245px;width:330px}}
+
+.sidebar-bottom .usage-title{display:block;font-size:11px;font-weight:600;color:#52644d}.sidebar-bottom small{line-height:1.6;margin:8px 0}.sidebar-bottom .usage-contact{display:block;font-size:12px;font-weight:600;color:#52644d;margin-top:8px}

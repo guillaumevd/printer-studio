@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.5
+
+- Prepare and center the splash while hidden, then reveal it at its final position.
+- Remove the splash halo and decorative overview elements.
+- Display the commercial-use permission notice and contact number in the sidebar.
+
 ## 1.4.4
 
 - Add regression coverage for external helper startup and DLL environment restoration.

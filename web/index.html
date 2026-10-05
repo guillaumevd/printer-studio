@@ -5,16 +5,16 @@
 <div class="shell">
   <aside class="sidebar"><a class="brand" href="/" aria-label="Printer Studio"><span class="brand-icon">▧</span><span>printer<span class="brand-light">studio</span><small>DI / DNP WORKSPACE</small></span></a>
     <div class="nav-label">WORKSPACE</div><a class="nav-item selected" href="#overview"><span>▣</span> My printer <i></i></a><a class="nav-item" href="#firmwares"><span>⇧</span> Firmware</a><a class="nav-item" href="#activity"><span>≡</span> Activity log</a>
-    <div class="sidebar-bottom"><span class="local-dot"></span> Local application<small>Your operations stay on this PC.</small><div>PRINTER STUDIO <span id="app-version">v1.4.4</span></div></div>
+    <div class="sidebar-bottom"><strong class="usage-title">Commercial use</strong><small>Commercial use requires prior permission from Vandriessche Guillaume.</small><a class="usage-contact" href="tel:+32499908293">+32 499 90 82 93</a><div>PRINTER STUDIO <span id="app-version">v1.4.5</span></div></div>
   </aside>
   <main id="overview"><header><span>PRINTER WORKSPACE <b>/</b> Overview</span><span class="local-pill"><i></i> LOCAL · USB</span></header>
     <div id="demo-banner" class="demo-banner" hidden>DEMO MODE — Simulated printer. No USB commands are sent.</div>
-    <div class="page-heading"><div><div class="eyebrow">YOUR PRINTER AT A GLANCE</div><h1>My printer<span>.</span></h1><p>Connect, inspect and manage your printer firmware.</p></div><button id="scan" class="button secondary"><span>⟳</span> Refresh detection</button></div>
+    <div class="page-heading"><div><h1>My printer<span>.</span></h1><p>Connect, inspect and manage your printer firmware.</p></div><button id="scan" class="button secondary"><span>⟳</span> Refresh detection</button></div>
     <div id="notice" role="status" class="notice" hidden></div>
     <section class="overview-grid">
       <article class="card printer-card"><div class="card-top"><span class="eyebrow">USB PRINTER</span><span id="connection" class="badge">Waiting</span></div>
         <div class="printer-visual"><div class="visual-orbit"></div><img src="/assets/printer-front.svg" alt="Front illustration of the DNP RX1HS photo printer with a silver body and black tray" width="400" height="300"><span class="visual-caption">THERMAL DYE SUBLIMATION</span></div>
-        <div class="printer-title"><div><h2 id="model">No printer</h2><p id="serial">Connect your printer via USB</p></div><span class="usb-icon">⌁</span></div>
+        <div class="printer-title"><div><h2 id="model">No printer</h2><p id="serial">Connect your printer via USB</p></div></div>
         <div class="device-footer"><span><i id="device-dot"></i> <span id="device-status">Waiting for connection</span></span><span id="device-kind">USB</span></div>
       </article>
       <article class="card details-card"><div class="card-top"><h2>System information</h2><span class="small-icon">⊙</span></div><div class="firmware-current"><span class="muted">Installed firmware</span><strong id="firmware">—<span>CURRENT VERSION</span></strong></div><dl><div><dt>Detected model</dt><dd id="detail-model">—</dd></div><div><dt>Serial number</dt><dd id="detail-serial">—</dd></div><div><dt>Color profile · CWD</dt><dd id="cwd">—</dd></div><div><dt>Device status</dt><dd id="raw-status">—</dd></div></dl><div class="metrics"><div><strong id="counter">—</strong><span>lifetime print count</span></div><div><strong id="media">—</strong><span>media counter</span></div></div></article>

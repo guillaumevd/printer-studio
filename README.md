@@ -119,3 +119,8 @@ release exists. It installs an actual application update, but sends no USB comma
 - `tests/`: firmware orchestration, HTTP security, updater and desktop tests.
 
 The startup flow was inspired by [VG-Timing](https://github.com/guillaumevd/vgtiming).
+
+## Commercial use
+
+Commercial use requires prior permission from Vandriessche Guillaume.
+Contact: +32 499 90 82 93. This notice concerns Printer Studio; bundled vendor resources retain their respective rights.

@@ -39,6 +39,15 @@ def run(report):
                         if not location:
                             continue
                         if location.endswith('/splash.html'):
+                            from System.Windows.Forms import Screen
+                            if candidate.native.Visible and "first_visible_splash" not in result:
+                                bounds = candidate.native.Bounds
+                                area = Screen.FromControl(candidate.native).WorkingArea
+                                result["first_visible_splash"] = dict(
+                                    started_hidden=candidate.hidden,
+                                    centered=abs(bounds.X + bounds.Width / 2 - area.X - area.Width / 2) <= 1
+                                        and abs(bounds.Y + bounds.Height / 2 - area.Y - area.Height / 2) <= 1,
+                                    x=bounds.X, y=bounds.Y)
                             layout = candidate.evaluate_js("({fits:document.documentElement.scrollHeight <= innerHeight, width:innerWidth,height:innerHeight})")
                             if layout:
                                 result["splash"] = dict(width=candidate.native.Width, height=candidate.native.Height,
@@ -57,6 +66,7 @@ def run(report):
                 assert abs(result["splash"]["layout"]["width"] - 400) <= 1 and abs(result["splash"]["layout"]["height"] - 500) <= 1, result
                 assert result["splash"]["border"] == "None", result
                 assert result["splash"]["layout"]["fits"], result
+                assert result["first_visible_splash"]["started_hidden"] and result["first_visible_splash"]["centered"], result
                 result["fullscreen"] = bool(window.native.is_fullscreen)
                 result["maximized"] = str(window.native.WindowState) == "Maximized"
                 result["window_border"] = str(window.native.FormBorderStyle)
