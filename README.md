@@ -14,7 +14,7 @@ The portable ZIP can also be extracted: keep the executable and `_internal` toge
 ## Startup and application updates
 
 The frameless 400 × 500 startup screen checks this repository's latest stable GitHub Release.
-It remains visible while the printer and workspace load, then opens the app in fullscreen.
+It remains visible while the printer and workspace load, then opens the app maximized, keeping the title bar and Windows taskbar visible.
 Choose **Install update** to download, verify and install a newer application version,
 or **Continue to app** to skip it. Network errors do not prevent offline use.
 The installer runs after Printer Studio exits and restarts the updated application.

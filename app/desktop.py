@@ -1,4 +1,4 @@
-"""Frameless startup splash and a fully loaded fullscreen Windows workspace."""
+"""Frameless startup splash and a fully loaded maximized Windows workspace."""
 import ctypes
 import os
 import threading
@@ -51,13 +51,14 @@ def show_window(url, can_close, startup=False, on_ready=None, update_test=None):
                         return
                     if main.evaluate_js("document.body.dataset.ready === 'true'"):
                         set_icon(main)
-                        main.toggle_fullscreen()
+                        main.maximize()
                         main.show()
                         handoff.set()
                         window.destroy()
                         return
                     time.sleep(.05)
                 # Keep a recoverable window visible if the local UI fails to initialize.
+                main.maximize()
                 main.show()
                 handoff.set()
                 window.destroy()

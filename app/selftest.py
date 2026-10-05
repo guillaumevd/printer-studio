@@ -51,14 +51,17 @@ def run(report):
                     time.sleep(.1)
                 assert window, "Workspace did not load"
                 for _ in range(100):
-                    if window.native.is_fullscreen:
+                    if str(window.native.WindowState) == "Maximized":
                         break
                     time.sleep(.05)
                 assert abs(result["splash"]["layout"]["width"] - 400) <= 1 and abs(result["splash"]["layout"]["height"] - 500) <= 1, result
                 assert result["splash"]["border"] == "None", result
                 assert result["splash"]["layout"]["fits"], result
                 result["fullscreen"] = bool(window.native.is_fullscreen)
-                assert result["fullscreen"], result
+                result["maximized"] = str(window.native.WindowState) == "Maximized"
+                result["window_border"] = str(window.native.FormBorderStyle)
+                assert result["maximized"] and not result["fullscreen"], result
+                assert result["window_border"] != "None", result
                 result["ui"] = window.evaluate_js("({language:document.documentElement.lang,restoreRemoved:!document.getElementById('restore'),model:document.getElementById('model').textContent})")
                 assert result["ui"]["language"] == "en"
                 assert result["ui"]["restoreRemoved"]

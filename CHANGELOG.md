@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.2
+
+- Open the workspace maximized, retaining the title bar and Windows taskbar.
+- Keep the frameless startup splash at 400 × 500 logical pixels.
+
 ## 1.4.1
 
 - Match VG-Timing's 400 × 500 startup window without a native title bar.
