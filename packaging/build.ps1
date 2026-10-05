@@ -5,9 +5,11 @@ Push-Location $projectRoot
 try {
     $python = Join-Path $projectRoot '.build-venv\Scripts\python.exe'
     if (-not (Test-Path -LiteralPath $python)) {
-        py -3 -m venv .build-venv
+        py -3.12 -m venv .build-venv
         if ($LASTEXITCODE -ne 0) { throw 'Unable to create the build environment.' }
     }
+    & $python -c "import sys, struct; assert sys.version_info[:2] == (3, 12) and struct.calcsize('P') == 8, 'Build with Python 3.12 x64.'"
+    if ($LASTEXITCODE -ne 0) { throw 'Python 3.12 x64 is required for this distribution.' }
     & $python -m pip install -r packaging/build-requirements.txt
     if ($LASTEXITCODE -ne 0) { throw 'Build dependency installation failed.' }
     $version = & $python -c "from app.core.paths import VERSION; print(VERSION)"

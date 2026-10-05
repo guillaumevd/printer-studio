@@ -4,6 +4,7 @@
 
 - Separate firmware, printer transports, desktop, HTTP, validation and frontend components.
 - Add native protocol tests using the actual bridge workflow with a fake USB API.
+- Serialize native USB access across installations and command-line launches.
 - Verify original DI detection and the complete four-step conversion in the desktop test.
 - Tolerate temporary USB absence during recovery and restart polling.
 - Add a complete distribution integrity manifest and offline verification command.

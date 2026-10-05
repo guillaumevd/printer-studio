@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
@@ -106,6 +107,21 @@ static partial class PrinterBridge {
             Reset("DI-RS1 01.02","02.04",image);
             Reject(()=>Flash(initialVersion,actualSerial,"02.04",corrupt),0,"checksum"); passed++;
         } finally { File.Delete(corrupt); }
+        using (var held=new ManualResetEvent(false))
+        using (var release=new ManualResetEvent(false)) {
+            var owner=new Thread(()=> {
+                using(var guard=new Mutex(false,"Local\\PrinterStudio.UsbOperation")) {
+                    guard.WaitOne(); held.Set(); release.WaitOne(); guard.ReleaseMutex();
+                }
+            });
+            owner.Start(); held.WaitOne();
+            try {
+                Reset("DI-RS1 01.02","02.04",image);
+                Require(Main(new string[]{"flash",initialVersion,actualSerial,"02.04",file})==1,"concurrent USB writer was accepted");
+                Require(calls.Count==0,"concurrent writer entered update mode");
+                passed++;
+            } finally { release.Set(); owner.Join(); }
+        }
         Console.WriteLine(json.Serialize(new {status="passed",tests=passed,usb_access=false}));
         return 0;
     }

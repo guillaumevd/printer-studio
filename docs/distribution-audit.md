@@ -25,12 +25,12 @@ The supported original identity is DI-RS1 01.02, model 91. Conversion starts wit
 
 The current vendor DLL is the same version documented in the original DI read-only probe and subsequent historical DNP steps. The first historical 02.04 sender used an older DLL build with the same firmware-write API. This application reproduces the verified stream and protocol, rather than reusing that old sender binary.
 
-No CWD, RFID, identity, calibration, maintenance or counter write export is declared by the bridge. Unsupported original firmware versions and bootloader-only identities cannot initiate a conversion.
+A named native mutex serializes bridge access across installations and direct command-line launches. No CWD, RFID, identity, calibration, maintenance or counter write export is declared by the bridge. Unsupported original firmware versions and bootloader-only identities cannot initiate a conversion.
 
 ## Tests and limits
 
 - 24 Python tests passed, including complete conversion planning, serialized access, identity/status checks, failed verification, interrupted-operation blocking and HTTP security.
-- 17 native tests passed. They compile the actual bridge workflow against a fake USB API, covering DI information reads, the firmware transitions, exact transmitted bytes, temporary absence, bad identities/statuses/bootloaders, corrupt payloads, failed writes and serial mismatch after restart. They load no vendor DLL and access no USB hardware.
+- 18 native tests passed. They compile the actual bridge workflow against a fake USB API, covering DI information reads, the firmware transitions, exact transmitted bytes, temporary absence, concurrent-writer rejection, bad identities/statuses/bootloaders, corrupt payloads, failed writes and serial mismatch after restart. They load no vendor DLL and access no USB hardware.
 - Desktop tests passed for executables extracted independently from the installer and portable ZIP, with Python removed from PATH, Python environment variables cleared and a different working directory. The tests verify bundle integrity, original DI information, the four-step simulated conversion, DNP downgrade, splash positioning and maximized workspace.
 - The portable integrity CLI passed separately without opening a window or accessing USB.
 
