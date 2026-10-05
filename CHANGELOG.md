@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.3
+
+- Isolate the Windows installer helper from the bundled Python DLL environment.
+- Verify installer checksums using .NET and retain helper diagnostics.
+
 ## 1.4.2
 
 - Open the workspace maximized, retaining the title bar and Windows taskbar.

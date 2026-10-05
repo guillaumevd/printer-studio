@@ -1,5 +1,6 @@
 """GitHub release discovery, bounded downloads and verified installer handoff."""
 import hashlib
+import ctypes
 import json
 import os
 from pathlib import Path
@@ -128,7 +129,11 @@ try {{
     $parent = Get-Process -Id {os.getpid()} -ErrorAction SilentlyContinue
     if ($parent) {{ Wait-Process -Id {os.getpid()} -Timeout 180 }}
     $installer = {ps_literal(installer)}
-    if ((Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant() -ne {ps_literal(update['sha256'])}) {{ throw 'Installer checksum mismatch' }}
+    $stream = [System.IO.File]::OpenRead($installer)
+    $hasher = [System.Security.Cryptography.SHA256]::Create()
+    try {{ $actualHash = [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '').ToLowerInvariant() }}
+    finally {{ $stream.Dispose(); $hasher.Dispose() }}
+    if ($actualHash -ne {ps_literal(update['sha256'])}) {{ throw 'Installer checksum mismatch' }}
     $setupArgs = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', {ps_literal('/DIR="' + str(executable.parent) + '"')}, {ps_literal('/LOG="' + str(log) + '"')})
     $setup = Start-Process -FilePath $installer -ArgumentList $setupArgs -WindowStyle Hidden -Wait -PassThru
     if ($setup.ExitCode -ne 0) {{ throw ('Installer returned ' + $setup.ExitCode) }}
@@ -142,6 +147,20 @@ try {{
 }}
 """, encoding="utf-8-sig")
     powershell = Path(os.environ["WINDIR"]) / "System32/WindowsPowerShell/v1.0/powershell.exe"
-    subprocess.Popen([str(powershell), "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", str(script)],
-                     creationflags=subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS,
-                     stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    environment = os.environ.copy()
+    environment["PYINSTALLER_RESET_ENVIRONMENT"] = "1"
+    environment["PSModulePath"] = str(powershell.parent / "Modules")
+    # External Windows tools must not inherit the frozen app's DLL search path.
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    previous = ctypes.create_unicode_buffer(32768)
+    kernel32.GetDllDirectoryW(len(previous), previous)
+    if not kernel32.SetDllDirectoryW(None):
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        with (folder / "helper.log").open("ab") as output:
+            subprocess.Popen([str(powershell), "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", str(script)],
+                             creationflags=subprocess.CREATE_NO_WINDOW,
+                             cwd=str(folder), env=environment,
+                             stdin=subprocess.DEVNULL, stdout=output, stderr=output)
+    finally:
+        kernel32.SetDllDirectoryW(previous.value or None)
