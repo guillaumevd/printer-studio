@@ -1,8 +1,7 @@
 """Only the four payloads documented in the August 2026 conversion are accepted."""
-from pathlib import Path
 import hashlib
 
-ROOT = Path(__file__).resolve().parents[1]
+from app.core.paths import ROOT
 VERSIONS = ["02.04", "02.07", "02.10", "02.21"]
 HASHES = [
     "95115C6E13E2121E2640CE6DF214926BB3FC94EEF2549D6B4890062B6420772A",

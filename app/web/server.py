@@ -4,8 +4,9 @@ import json
 import mimetypes
 import secrets
 from urllib.parse import urlsplit
-from .catalog import ROOT, catalog
-from .paths import VERSION
+from app.core.paths import ROOT
+from app.firmware.catalog import catalog
+from app.core.paths import VERSION
 
 def make_server(service, port):
     token = secrets.token_urlsafe(32)
@@ -54,13 +55,15 @@ def make_server(service, port):
                 if not 0 <= length <= 4096:
                     raise ValueError("Request too large")
                 data = json.loads(self.rfile.read(length) or b"{}")
+                if not isinstance(data, dict):
+                    raise ValueError("Request body must be a JSON object.")
                 if self.path == "/api/scan":
                     return self.send(200, service.scan())
                 if self.path == "/api/update":
                     if data.get("confirmed") is not True:
                         raise ValueError("Confirm the firmware change.")
                     return self.send(202, service.start(data.get("serial"), data.get("source"), data.get("target")))
-                return self.send(404, {"error": "Action unknowne"})
+                return self.send(404, {"error": "Unknown action"})
             except (ValueError, KeyError, TypeError) as exc:
                 return self.send(409, {"error": str(exc)})
             except Exception as exc:

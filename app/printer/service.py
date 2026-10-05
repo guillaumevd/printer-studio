@@ -4,8 +4,8 @@ import copy
 import json
 import threading
 import uuid
-from .catalog import ROOT, plan, verify
-from .paths import DATA_ROOT
+from app.firmware.catalog import plan, verify
+from app.core.paths import DATA_ROOT
 
 ALLOWED_STATUS = {"0x00010001", "0x00010008", "0x00010010", "0x00020008"}
 

@@ -1,5 +1,4 @@
 """Packaged-app smoke test. Always simulated, with isolated temporary logs."""
-import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -9,17 +8,20 @@ import time
 
 def run(report):
     import webview
-    from .catalog import catalog, ROOT
-    from .desktop import show_window
-    from .devices import DemoDevice, NativeDevice
-    from .server import make_server
-    from .service import PrinterService
-    from .paths import VERSION
+    from app.firmware.catalog import catalog
+    from app.desktop.window import show_window
+    from app.printer.transports import DemoDevice, NativeDevice
+    from app.web.server import make_server
+    from app.printer.service import PrinterService
+    from app.core.paths import VERSION
     result = {"version": VERSION, "usb_access": False}
+    import sys
+    if getattr(sys, "frozen", False):
+        from app.validation.bundle import verify_bundle
+        result["bundle"] = verify_bundle(Path(sys.executable).parent)
     report = Path(report).resolve()
     with tempfile.TemporaryDirectory() as folder:
         device = DemoDevice()
-        device.firmware = "DS-RX1 02.21"
         service = PrinterService(device, Path(folder))
         service.scan()
         server = make_server(service, 0)
@@ -75,14 +77,30 @@ def run(report):
                 result["ui"] = window.evaluate_js("({language:document.documentElement.lang,restoreRemoved:!document.getElementById('restore'),model:document.getElementById('model').textContent})")
                 assert result["ui"]["language"] == "en"
                 assert result["ui"]["restoreRemoved"]
-                assert result["ui"]["model"] == "DNP DS-RX1"
+                assert result["ui"]["model"] == "DI-RS1"
+                result["di_ui"] = window.evaluate_js("({firmware:document.getElementById('firmware').textContent,serial:document.getElementById('detail-serial').textContent,cwd:document.getElementById('cwd').textContent,route:document.getElementById('route').textContent,enabled:!document.getElementById('update').disabled})")
+                assert result["di_ui"]["firmware"].startswith("01.02")
+                assert result["di_ui"]["serial"] == "DEMO-14002139"
+                assert result["di_ui"]["cwd"] == "DI-RS1_300_0201.CWD"
+                assert result["di_ui"]["enabled"]
                 assert window.native.Icon is not None
-                window.evaluate_js("document.querySelector('[data-version=\"02.10\"]').click(); document.getElementById('update').click(); document.getElementById('ack').click(); document.getElementById('confirm-start').click()")
+                window.evaluate_js("document.querySelector('[data-version=\"02.21\"]').click(); document.getElementById('update').click(); document.getElementById('ack').click(); document.getElementById('confirm-start').click()")
                 for _ in range(150):
                     if (service.snapshot().get("job") or {}).get("status") == "success":
                         break
                     time.sleep(.1)
                 assert service.snapshot()["job"]["status"] == "success"
+                assert service.snapshot()["job"]["steps"] == ["02.04", "02.07", "02.10", "02.21"]
+                result["conversion_steps"] = service.snapshot()["job"]["steps"]
+                for _ in range(60):
+                    if window.evaluate_js("document.getElementById('model').textContent === 'DNP DS-RX1' && !document.querySelector('[data-version=\"02.10\"]').disabled"):
+                        break
+                    time.sleep(.1)
+                window.evaluate_js("document.querySelector('[data-version=\"02.10\"]').click(); document.getElementById('update').click(); document.getElementById('ack').click(); document.getElementById('confirm-start').click()")
+                for _ in range(150):
+                    if (service.snapshot().get("job") or {}).get("status") == "success" and device.firmware == "DS-RX1 02.10":
+                        break
+                    time.sleep(.1)
                 assert device.firmware == "DS-RX1 02.10"
                 result["status"] = "passed"
                 result["simulated_firmware"] = device.firmware

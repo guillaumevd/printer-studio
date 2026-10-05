@@ -6,10 +6,10 @@ import time
 import unittest
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
-from app.catalog import catalog, plan, verify, VERSIONS
-from app.devices import DemoDevice
-from app.service import PrinterService
-from app.server import make_server
+from app.firmware.catalog import catalog, plan, verify, VERSIONS
+from app.printer.transports import DemoDevice
+from app.printer.service import PrinterService
+from app.web.server import make_server
 
 class FastDevice(DemoDevice):
     def flash(self, printer, target, path, emit):
@@ -126,6 +126,7 @@ class StudioTests(unittest.TestCase):
             for path, headers, body, expected in [
                 ("/api/update", {}, b"{}", 403),
                 ("/api/update", {"X-Studio-Token": token}, b"{}", 409),
+                ("/api/update", {"X-Studio-Token": token}, b"[]", 409),
                 ("/api/scan", {"X-Studio-Token": token, "Origin": "https://evil.example"}, b"{}", 403),
                 ("/api/state", {"Host": "evil.example"}, None, 403),
                 ("/../run.py", {}, None, 404),

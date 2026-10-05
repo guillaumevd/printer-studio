@@ -7,10 +7,10 @@ import tempfile
 import threading
 from pathlib import Path
 import webview
-from app.desktop import show_window
-from app.devices import DemoDevice
-from app.service import PrinterService
-from app.server import make_server
+from app.desktop.window import show_window
+from app.printer.transports import DemoDevice
+from app.printer.service import PrinterService
+from app.web.server import make_server
 
 with tempfile.TemporaryDirectory() as folder:
     service = PrinterService(DemoDevice(), Path(folder))

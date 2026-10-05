@@ -5,15 +5,15 @@ Python backend, local HTML interface, native USB bridge and a dedicated WebView2
 
 ## Install
 
-Download the latest **PrinterStudio-Setup-…-x64.exe** from
+Download the latest **PrinterStudio-Setup-â€¦-x64.exe** from
 [GitHub Releases](https://github.com/guillaumevd/printer-studio/releases/latest).
 Python is included. Windows 10 (1809+) / 11 x64 and the printer USB driver are required.
 Setup installs Microsoft WebView2 if missing; only that step requires Internet.
-The portable ZIP can also be extracted: keep the executable and `_internal` together.
+The portable ZIP can also be extracted: keep the entire folder together. If WebView2 is missing, run `Install WebView2.cmd`; the Microsoft bootstrapper is included and requires Internet. The printer USB driver remains a separate prerequisite.
 
 ## Startup and application updates
 
-The frameless 400 × 500 startup screen checks this repository's latest stable GitHub Release.
+The frameless 400 Ã— 500 startup screen checks this repository's latest stable GitHub Release.
 It remains visible while the printer and workspace load, then opens the app maximized, keeping the title bar and Windows taskbar visible.
 Choose **Install update** to download, verify and install a newer application version,
 or **Continue to app** to skip it. Network errors do not prevent offline use.
@@ -37,7 +37,7 @@ Bundled catalog: DNP **02.04, 02.07, 02.10, 02.21**. Upgrades follow successive
 versions; downgrades send the selected image directly. Same-version transfers are
 blocked. DI Support restoration is not offered.
 
-The upward sequence and the 02.21 → 02.10 downgrade have been verified on the
+The upward sequence and the 02.21 â†’ 02.10 downgrade have been verified on the
 project's converted printer. Other downward transitions remain unverified on
 hardware. A successful version check does not replace a test print.
 
@@ -93,7 +93,7 @@ Install Inno Setup 6, run `packaging/prepare.ps1`, then:
 ```
 
 The build uses a dedicated virtual environment and pinned build dependencies.
-Change `VERSION` in `app/paths.py` for a release. Output in `release/` includes
+Change `VERSION` in `app/core/paths.py` for a release. Output in `release/` includes
 an installer, portable ZIP, integrity manifest and SHA-256 list. Publish the
 matching source tag, installer and manifest together as a GitHub Release.
 Create a draft, upload all assets, then publish it so clients see a complete release.
@@ -112,9 +112,15 @@ release exists. It installs an actual application update, but sends no USB comma
 
 ## Components
 
-- `app/`: HTTP server, device service, desktop window, startup screen and updater.
-- `native/`: C# USB bridge and build script.
-- `web/`: HTML, JavaScript, CSS and printer artwork.
+- `app/core/`: shared bundle paths and application version.
+- `app/firmware/`: verified image catalog and transition planning.
+- `app/printer/`: serialized operations, logs and native/demo transports.
+- `app/desktop/`: Windows workspace, splash and GitHub application updates.
+- `app/web/`: loopback HTTP server.
+- `app/validation/`: complete bundle integrity checks and isolated desktop tests.
+- `native/transport/`, `native/protocol/`, `native/firmware/`: USB ABI, printer queries and guarded firmware transfer.
+- `web/scripts/components/`: printer, firmware and activity views.
+- `web/`: HTML, CSS and printer artwork.
 - `packaging/`: PyInstaller specification, Inno Setup installer and build tools.
 - `tests/`: firmware orchestration, HTTP security, updater and desktop tests.
 
@@ -124,3 +130,13 @@ The startup flow was inspired by [VG-Timing](https://github.com/guillaumevd/vgti
 
 Commercial use requires prior permission from Vandriessche Guillaume.
 Contact: +32 499 90 82 93. This notice concerns Printer Studio; bundled vendor resources retain their respective rights.
+
+## Distribution integrity
+
+Both distributions contain a `bundle-manifest.json` covering every application file. Verify an extracted or installed package without accessing USB:
+
+```powershell
+& './Printer Studio.exe' --verify-bundle 'C:/Temp/bundle-report.json'
+```
+
+The desktop self-test also verifies the bundle, displays an unconverted simulated DI-RS1 01.02, runs the four-step conversion and verifies a DNP downgrade. Native protocol tests compile the actual bridge workflow against a simulated USB API; no vendor DLL is loaded by those tests.

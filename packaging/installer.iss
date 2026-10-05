@@ -1,5 +1,5 @@
 #ifndef AppVersion
-#define AppVersion "1.4.5"
+#define AppVersion "1.5.0"
 #endif
 [Setup]
 AppId={{BD38D56E-23E5-4CDD-B945-C739E35830E7}
@@ -31,7 +31,6 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
 
 [Files]
 Source: "..\dist\Printer Studio\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "vendor\MicrosoftEdgeWebview2Setup.exe"; Flags: dontcopy
 
 [Icons]

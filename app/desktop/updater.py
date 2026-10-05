@@ -10,7 +10,7 @@ import sys
 import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
-from .paths import DATA_ROOT, VERSION
+from app.core.paths import DATA_ROOT, VERSION
 
 REPOSITORY = "guillaumevd/printer-studio"
 API_URL = f"https://api.github.com/repos/{REPOSITORY}/releases/latest"

@@ -3,7 +3,7 @@ import sys
 import threading
 import time
 from . import updater
-from .paths import DATA_ROOT, VERSION
+from app.core.paths import DATA_ROOT, VERSION
 
 
 class SplashAPI:

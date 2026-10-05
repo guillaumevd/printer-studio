@@ -3,7 +3,7 @@ import ctypes
 import os
 import threading
 import time
-from .catalog import ROOT
+from app.core.paths import ROOT
 
 
 def show_window(url, can_close, startup=False, on_ready=None, update_test=None):

@@ -6,11 +6,10 @@ import webbrowser
 import json
 from pathlib import Path
 from urllib.request import urlopen
-from app.devices import DemoDevice, NativeDevice
-from app.server import make_server
-from app.service import PrinterService
-from app.catalog import ROOT
-from app.paths import DATA_ROOT, VERSION
+from app.printer.transports import DemoDevice, NativeDevice
+from app.web.server import make_server
+from app.printer.service import PrinterService
+from app.core.paths import DATA_ROOT, VERSION
 
 def main():
     parser = argparse.ArgumentParser(description="DI / DNP Printer Studio")
@@ -19,10 +18,20 @@ def main():
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument("--browser", action="store_true", help="Open in a browser instead of the desktop window")
     parser.add_argument("--self-test", metavar="REPORT", help="Run isolated desktop simulation and write a JSON report")
+    parser.add_argument("--verify-bundle", metavar="REPORT", help="Verify standalone files without USB access")
     parser.add_argument("--update-test", metavar="REPORT", help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if args.verify_bundle:
+        import sys
+        from app.validation.bundle import verify_bundle
+        if not getattr(sys, "frozen", False):
+            raise RuntimeError("Bundle verification requires the standalone executable")
+        report = Path(args.verify_bundle).resolve()
+        report.parent.mkdir(parents=True, exist_ok=True)
+        report.write_text(json.dumps(verify_bundle(Path(sys.executable).parent), indent=2), encoding="utf-8")
+        return
     if args.self_test:
-        from app.selftest import run
+        from app.validation.selftest import run
         return run(args.self_test)
     if args.update_test:
         args.demo, args.port = True, 8766
@@ -52,7 +61,7 @@ def main():
             if args.browser:
                 webbrowser.open(url)
             elif not args.no_browser:
-                from app.desktop import show_window
+                from app.desktop.window import show_window
                 show_window(url, remote_can_close)
             raise SystemExit(0)
     import ctypes
@@ -71,7 +80,7 @@ def main():
                 webbrowser.open(url)
             server.serve_forever()
         else:
-            from app.desktop import show_window
+            from app.desktop.window import show_window
             server_thread = threading.Thread(target=server.serve_forever, daemon=True)
             server_thread.start()
             try:

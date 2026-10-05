@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-from app import updater
-from app.startup import Startup, SplashAPI
+from app.desktop import updater
+from app.desktop.startup import Startup, SplashAPI
 
 
 class UpdateTests(unittest.TestCase):
@@ -58,7 +58,7 @@ class UpdateTests(unittest.TestCase):
     def test_offline_continues_once(self):
         opened = []
         startup = Startup(lambda: opened.append(True), lambda: True)
-        with patch('sys.frozen', True, create=True), patch.object(updater, 'latest', side_effect=OSError('offline')), patch('app.startup.time.sleep'):
+        with patch('sys.frozen', True, create=True), patch.object(updater, 'latest', side_effect=OSError('offline')), patch('app.desktop.startup.time.sleep'):
             startup.check()
         startup.continue_app()
         self.assertEqual(opened, [True])
@@ -81,7 +81,7 @@ class UpdateTests(unittest.TestCase):
         startup.state['status'] = 'available'
         startup.update = {'version':'1.4.1'}
         startup.continue_app()
-        with patch('app.startup.threading.Thread') as thread:
+        with patch('app.desktop.startup.threading.Thread') as thread:
             startup.install_update()
             thread.assert_not_called()
 
