@@ -1,4 +1,4 @@
-Printer Studio 1.3 — Windows x64
+Printer Studio — Windows x64
 
 Python and the application's dependencies are included. No separate Python installation is required.
 

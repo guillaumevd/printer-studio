@@ -75,7 +75,7 @@ def main():
             server_thread = threading.Thread(target=server.serve_forever, daemon=True)
             server_thread.start()
             try:
-                show_window(url, service.request_close, startup=True, on_ready=scan, update_test=args.update_test)
+                show_window(url, service.request_close, startup=True, on_ready=service.scan, update_test=args.update_test)
             finally:
                 server.shutdown()
                 server_thread.join()

@@ -31,16 +31,34 @@ def run(report):
             try:
                 assert all(item["available"] for item in catalog()), "Payload verification failed"
                 NativeDevice()._command("probe")  # Validate bundled files; do not execute.
-                for _ in range(300):
-                    if webview.windows and webview.windows[0].events.loaded.is_set():
-                        window = webview.windows[0]
+                for _ in range(500):
+                    for candidate in list(webview.windows):
+                        if not candidate.events.loaded.is_set():
+                            continue
+                        location = candidate.get_current_url()
+                        if not location:
+                            continue
+                        if location.endswith('/splash.html'):
+                            layout = candidate.evaluate_js("({fits:document.documentElement.scrollHeight <= innerHeight, width:innerWidth,height:innerHeight})")
+                            if layout:
+                                result["splash"] = dict(width=candidate.native.Width, height=candidate.native.Height,
+                                    border=str(candidate.native.FormBorderStyle), layout=layout)
+                        elif candidate.evaluate_js("document.body.dataset.ready === 'true'"):
+                            window = candidate
+                            break
+                    if window:
                         break
                     time.sleep(.1)
-                assert window, "Window did not load"
+                assert window, "Workspace did not load"
                 for _ in range(100):
-                    if window.evaluate_js("document.querySelectorAll('[data-version]').length") == 4:
+                    if window.native.is_fullscreen:
                         break
-                    time.sleep(.1)
+                    time.sleep(.05)
+                assert abs(result["splash"]["layout"]["width"] - 400) <= 1 and abs(result["splash"]["layout"]["height"] - 500) <= 1, result
+                assert result["splash"]["border"] == "None", result
+                assert result["splash"]["layout"]["fits"], result
+                result["fullscreen"] = bool(window.native.is_fullscreen)
+                assert result["fullscreen"], result
                 result["ui"] = window.evaluate_js("({language:document.documentElement.lang,restoreRemoved:!document.getElementById('restore'),model:document.getElementById('model').textContent})")
                 assert result["ui"]["language"] == "en"
                 assert result["ui"]["restoreRemoved"]
@@ -60,12 +78,12 @@ def run(report):
             finally:
                 report.parent.mkdir(parents=True, exist_ok=True)
                 report.write_text(json.dumps(result, indent=2), encoding="utf-8")
-                if webview.windows:
-                    webview.windows[0].destroy()
+                for opened in list(webview.windows):
+                    opened.destroy()
 
         threading.Thread(target=check, daemon=True).start()
         try:
-            show_window(f"http://127.0.0.1:{server.server_port}", service.request_close)
+            show_window(f"http://127.0.0.1:{server.server_port}", service.request_close, startup=True)
         finally:
             server.shutdown()
             server.server_close()

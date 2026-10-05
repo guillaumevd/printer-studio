@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from app import updater
-from app.startup import Startup
+from app.startup import Startup, SplashAPI
 
 
 class UpdateTests(unittest.TestCase):
@@ -62,7 +62,12 @@ class UpdateTests(unittest.TestCase):
             startup.check()
         startup.continue_app()
         self.assertEqual(opened, [True])
-        self.assertIn('offline', startup.state['message'])
+        self.assertEqual(startup.state['status'], 'opening')
+
+    def test_splash_api_does_not_expose_internal_objects(self):
+        api = SplashAPI(Startup(lambda: None, lambda: True))
+        self.assertEqual({name for name in dir(api) if not name.startswith('_')},
+                         {'get_state', 'continue_app', 'install_update'})
 
     def test_skip_prevents_late_update_prompt(self):
         startup = Startup(lambda: None, lambda: True)

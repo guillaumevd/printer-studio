@@ -37,4 +37,5 @@ $('export').addEventListener('click', () => {
 });
 window.addEventListener('beforeunload', event => { if (state.job?.status === 'running') { event.preventDefault(); event.returnValue = ''; } });
 await refresh();
+document.body.dataset.ready = 'true';
 setInterval(async () => { if (!pending) { await refresh(); if (state.job?.status !== 'running' && Date.now() - lastScan > 15000) await scan(); } }, 2000);

@@ -6,6 +6,21 @@ from . import updater
 from .paths import DATA_ROOT, VERSION
 
 
+class SplashAPI:
+    """Expose only UI actions; never traverse native windows or internal locks."""
+    def __init__(self, controller):
+        self._controller = controller
+
+    def get_state(self):
+        return self._controller.get_state()
+
+    def continue_app(self):
+        return self._controller.continue_app()
+
+    def install_update(self):
+        return self._controller.install_update()
+
+
 class Startup:
     def __init__(self, open_app, can_close, test_report=None):
         self.window = None
@@ -51,6 +66,7 @@ class Startup:
             if self.closed or self.state["status"] in ("downloading", "installing"):
                 return
             self.closed = True
+            self.state.update(status="opening", message="Loading your printer workspace…")
         self.open_app()
 
     def install_update(self):
