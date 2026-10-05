@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.4
+
+- Add regression coverage for external helper startup and DLL environment restoration.
+
 ## 1.4.3
 
 - Isolate the Windows installer helper from the bundled Python DLL environment.

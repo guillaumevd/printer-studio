@@ -3,7 +3,7 @@ import io
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from app import updater
 from app.startup import Startup, SplashAPI
 
@@ -87,3 +87,29 @@ class UpdateTests(unittest.TestCase):
 
     def test_powershell_literal_quotes(self):
         self.assertEqual(updater.ps_literal("C:/O'Brien/$test.exe"), "'C:/O''Brien/$test.exe'")
+
+    def test_installer_helper_environment_and_dll_restore(self):
+        for launch_error in (None, OSError("helper unavailable")):
+            with self.subTest(error=launch_error), tempfile.TemporaryDirectory() as folder:
+                installer = Path(folder) / "setup.exe"
+                installer.write_bytes(b"verified")
+                update = dict(version="1.4.4", sha256=hashlib.sha256(b"verified").hexdigest())
+                kernel = MagicMock()
+                with patch('sys.frozen', True, create=True), patch('sys.executable', str(Path(folder) / 'app.exe')), \
+                     patch.dict(updater.os.environ, {"WINDIR": "C:/Windows"}), \
+                     patch.object(updater.ctypes, 'WinDLL', return_value=kernel, create=True), \
+                     patch.object(updater.subprocess, 'CREATE_NO_WINDOW', 0, create=True), \
+                     patch.object(updater.subprocess, 'Popen', side_effect=launch_error) as launch:
+                    if launch_error:
+                        with self.assertRaises(OSError):
+                            updater.launch_installer(installer, update)
+                    else:
+                        updater.launch_installer(installer, update)
+                    self.assertEqual(kernel.SetDllDirectoryW.call_count, 2)
+                    options = launch.call_args.kwargs
+                    self.assertEqual(options['env']['PYINSTALLER_RESET_ENVIRONMENT'], '1')
+                    self.assertTrue(options['env']['PSModulePath'].endswith('Modules'))
+                    self.assertEqual(options['cwd'], str(Path(folder).resolve()))
+                    script = (Path(folder) / 'install-update.ps1').read_text(encoding='utf-8-sig')
+                    self.assertIn('SHA256]::Create()', script)
+                    self.assertNotIn('Get-FileHash', script)
