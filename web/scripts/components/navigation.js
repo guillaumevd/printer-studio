@@ -1,6 +1,5 @@
 const pages = {
   overview: ['Overview', 'My printer', 'Connect, inspect and manage your printer firmware.'],
-  firmwares: ['Firmware', 'Your firmware', 'Choose an edition and review its supported media.'],
   activity: ['Activity log', 'Activity log', 'Follow operation progress and export the results.'],
 };
 

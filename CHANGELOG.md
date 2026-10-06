@@ -2,7 +2,7 @@
 
 ## 1.8.0
 
-- Separate printer, firmware and activity into full-height tabs.
+- Keep printer information and firmware selection together in a full-height dashboard.
 - Keep the activity log hidden until selected, with a running-operation indicator.
 - Adapt card sizes and spacing to the available window height.
 

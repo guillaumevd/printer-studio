@@ -8,7 +8,8 @@ their original DNP-only media policy. See [VG-RX1HS details](docs/vg-rx1hs.md).
 The DS-RX1 USB/protocol identity stays unchanged for existing drivers and Hot
 Folder; external software can continue to show RX1HS.
 
-Printer, firmware and activity have separate tabs that fit the window height.
+Printer information and firmware selection share a dashboard that fits the window height.
+Activity has its own separate tab.
 The log is shown only when selected; its entries can scroll inside that tab.
 
 The application also supports return to original **DI-RS1 01.02** for DI-RS1 printers

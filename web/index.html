@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Printer Studio · DI / DNP</title><link rel="icon" type="image/x-icon" href="/assets/printer.ico"><link rel="stylesheet" href="/styles/studio.css"><link rel="stylesheet" href="/styles/desktop.css"><link rel="stylesheet" href="/styles/firmware-catalog.css"><link rel="stylesheet" href="/styles/workspace.css"><script type="module" src="/scripts/app.js"></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Printer Studio · DI / DNP</title><link rel="icon" type="image/x-icon" href="/assets/printer.ico"><link rel="stylesheet" href="/styles/studio.css"><link rel="stylesheet" href="/styles/desktop.css"><link rel="stylesheet" href="/styles/firmware-catalog.css"><link rel="stylesheet" href="/styles/workspace.css"><link rel="stylesheet" href="/styles/dashboard.css"><script type="module" src="/scripts/app.js"></script></head>
 <body>
 <div class="shell">
   <aside class="sidebar"><a class="brand" href="/" aria-label="Printer Studio"><span class="brand-icon">▧</span><span>printer<span class="brand-light">studio</span><small>DI / DNP WORKSPACE</small></span></a>
-    <div class="nav-label">WORKSPACE</div><a class="nav-item selected" href="#overview"><span>▣</span> My printer <i></i></a><a class="nav-item" href="#firmwares"><span>⇧</span> Firmware</a><a class="nav-item" href="#activity"><span>≡</span> Activity log</a>
+    <div class="nav-label">WORKSPACE</div><a class="nav-item selected" href="#overview"><span>▣</span> My printer <i></i></a><a class="nav-item" href="#activity"><span>≡</span> Activity log</a>
     <div class="sidebar-bottom"><strong class="usage-title">Commercial use</strong><small>Commercial use requires prior permission from Vandriessche Guillaume.</small><a class="usage-contact" href="tel:+32499908293">+32 499 90 82 93</a><div>PRINTER STUDIO <span id="app-version">v1.6.1</span></div></div>
   </aside>
   <main><header><span>PRINTER WORKSPACE <b>/</b> <span id="page-label">Overview</span></span><span class="local-pill"><i></i> LOCAL · USB</span></header>
     <div id="demo-banner" class="demo-banner" hidden>DEMO MODE — Simulated printer. No USB commands are sent.</div>
     <div class="page-heading"><div><h1 id="page-title">My printer<span>.</span></h1><p id="page-description">Connect, inspect and manage your printer firmware.</p></div><button id="scan" class="button secondary"><span>⟳</span> Refresh detection</button></div>
     <div id="notice" role="status" class="notice" hidden></div>
-    <section id="overview" class="overview-grid workspace-panel" aria-label="My printer">
+    <div id="overview" class="workspace-panel dashboard-panel"><section class="overview-grid" aria-label="My printer">
       <article class="card printer-card"><div class="card-top"><span class="eyebrow">USB PRINTER</span><span id="connection" class="badge">Waiting</span></div>
         <div class="printer-visual"><div class="visual-orbit"></div><img src="/assets/printer-front.svg" alt="Front illustration of the DNP RX1HS photo printer with a silver body and black tray" width="400" height="300"><span class="visual-caption">THERMAL DYE SUBLIMATION</span></div>
         <div class="printer-title"><div><h2 id="model">No printer</h2><p id="serial">Connect your printer via USB</p></div></div>
@@ -19,10 +19,11 @@
       </article>
       <article class="card details-card"><div class="card-top"><h2>System information</h2><span class="small-icon">⊙</span></div><div class="firmware-current"><span class="muted">Installed firmware</span><strong id="firmware">—<span>CURRENT VERSION</span></strong></div><dl><div><dt>Detected model</dt><dd id="detail-model">—</dd></div><div><dt>Serial number</dt><dd id="detail-serial">—</dd></div><div><dt>Color profile · CWD</dt><dd id="cwd">—</dd></div><div><dt>Device status</dt><dd id="raw-status">—</dd></div></dl><div class="metrics"><div><strong id="counter">—</strong><span>lifetime print count</span></div><div><strong id="media">—</strong><span>media counter</span></div></div></article>
     </section>
-    <section id="firmwares" class="card update-card workspace-panel" hidden aria-label="Firmware"><div class="section-heading"><div><span class="eyebrow">FIRMWARE MANAGEMENT</span><h2>Choose your firmware.</h2><p>Choose a firmware and see which media brands it supports.</p></div><span class="subtle-badge">✓ Files verified with SHA-256</span></div>
+    <section id="firmwares" class="card update-card" aria-label="Firmware"><div class="section-heading"><div><span class="eyebrow">FIRMWARE MANAGEMENT</span><h2>Choose your firmware.</h2><p>Choose a firmware and see which media brands it supports.</p></div><span class="subtle-badge">✓ Files verified with SHA-256</span></div>
       <div class="update-layout"><div><div class="field-heading"><label for="target">Target version</label><span>Local catalog</span></div><div id="version-options" class="version-options"></div><select id="target" class="sr-only" aria-label="Target version"><option>02.04</option><option>02.07</option><option>02.10</option><option selected>02.21</option><option value="DI-RS1 01.02">DI-RS1 1.02</option><option value="VG-02.21">VG-RX1HS 2.21</option></select><div class="route-label">FIRMWARE CHANGE ROUTE</div><div id="route" class="route">Connect a printer to calculate the route.</div></div>
         <div class="update-summary"><span class="summary-icon">↗</span><h3 id="update-title">Install DNP firmware</h3><p id="update-description">Automatic source detection and verification after each restart.</p><button id="update" class="button primary" disabled>Review firmware change <span>→</span></button><small>No calibration or counter write commands are sent.</small></div></div>
     </section>
+    </div>
     <section id="activity" class="card activity-card workspace-panel" hidden aria-label="Activity log"><div class="card-top"><div><span class="eyebrow">OPERATION TRACKING</span><h2>Activity log</h2></div><button id="export" class="text-button" disabled>↓ Export log</button></div><div id="job-status" class="job-status">No operation in progress</div><div id="steps-progress" class="steps-progress"></div><div id="events" class="events" aria-live="polite"><div class="empty-log"><span>≋</span><p>All quiet here.<small>Operation steps and results will appear here.</small></p></div></div></section>
     <footer><span><i class="local-dot"></i> Runs locally · Windows / USB</span><span>DI-RS1 → DNP DS-RX1 / RX1HS</span></footer>
   </main>

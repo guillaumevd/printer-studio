@@ -84,12 +84,12 @@ def run(report):
                 assert result["ui"]["language"] == "en"
                 assert not result["ui"]["restorePresent"]
                 assert result["ui"]["firmwareCards"] == 6 and result["ui"]["mediaIconsLoaded"]
-                result["tabs"] = window.evaluate_js("({logsHidden:document.getElementById('activity').hidden,firmwareHidden:document.getElementById('firmwares').hidden,fits:document.documentElement.scrollHeight<=innerHeight})")
+                result["tabs"] = window.evaluate_js("({logsHidden:document.getElementById('activity').hidden,fits:document.documentElement.scrollHeight<=innerHeight})")
                 assert all(result["tabs"].values()), result["tabs"]
                 window.evaluate_js("document.querySelector('[href=\"#activity\"]').click()")
                 assert window.evaluate_js("!document.getElementById('activity').hidden && document.getElementById('overview').hidden")
-                window.evaluate_js("document.querySelector('[href=\"#firmwares\"]').click()")
-                assert window.evaluate_js("!document.getElementById('firmwares').hidden && document.getElementById('activity').hidden")
+                window.evaluate_js("document.querySelector('[href=\"#overview\"]').click()")
+                assert window.evaluate_js("!document.getElementById('overview').hidden && document.getElementById('activity').hidden")
                 window.evaluate_js("document.querySelector('[data-version=\"DI-RS1 01.02\"]').click()")
                 assert window.evaluate_js("document.getElementById('update').disabled"), "Already-original DI must not restore"
                 window.evaluate_js("document.querySelector('[data-version=\"02.21\"]').click()")
