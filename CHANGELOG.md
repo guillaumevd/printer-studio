@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.1
+
+- Improve dashboard proportions, text readability and contrast.
+- Give media illustrations consistent framing and readable brand badges.
+- Simplify selected-firmware explanations and remove conflicting layout overrides.
+
 ## 1.8.0
 
 - Keep printer information and firmware selection together in a full-height dashboard.

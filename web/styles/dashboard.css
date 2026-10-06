@@ -1,45 +1,177 @@
-main{min-width:0}.shell{grid-template-columns:242px minmax(0,1fr)}
-/* Printer and firmware share one dashboard; activity remains a separate page. */
-.dashboard-panel{display:flex;flex-direction:column;gap:16px}
-.dashboard-panel .overview-grid{flex:0 0 clamp(175px,28vh,230px);min-height:175px;max-height:260px;grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr)}
-.dashboard-panel .printer-card{display:grid;grid-template-columns:44% minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
-.dashboard-panel .printer-card .card-top{grid-column:1/-1;padding:12px 18px 0}
-.dashboard-panel .printer-visual{grid-row:2/4;height:auto;min-height:0}
-.dashboard-panel .printer-visual img{height:100%;width:100%;max-height:190px}
-.dashboard-panel .visual-caption{display:none}
-.dashboard-panel .printer-title{padding:12px 16px 6px;min-width:0}
-.dashboard-panel .printer-title h2{font-size:21px}
-.dashboard-panel .printer-title p{font-size:10px;overflow-wrap:anywhere}
-.dashboard-panel .device-footer{grid-column:2;flex-wrap:wrap;gap:6px;padding:10px 16px}
-.dashboard-panel .details-card{min-height:0;display:grid;grid-template-columns:minmax(130px,.8fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:8px 20px;padding:14px 20px}
-.dashboard-panel .details-card .card-top{grid-column:1/-1}
-.dashboard-panel .firmware-current{padding:0;border:0}
-.dashboard-panel .firmware-current strong{font-size:30px;margin-top:4px;gap:8px;flex-wrap:wrap}
-.dashboard-panel .details-card dl{grid-column:2;grid-row:2/4;margin:0;align-self:center}
-.dashboard-panel dl>div{margin:9px 0;font-size:10px}
-.dashboard-panel .metrics{grid-column:1;padding-top:9px;gap:10px}
-.dashboard-panel .metrics strong{font-size:22px}
-.dashboard-panel .metrics>div+div{padding-left:10px}
-.dashboard-panel .metrics span{font-size:8px}
-.dashboard-panel .update-card{margin:0;flex:1;min-height:0;padding:16px 20px}
-.dashboard-panel .section-heading{display:none}
-.dashboard-panel .update-layout{margin-top:0;gap:18px}
-.dashboard-panel .version-option.firmware-tile{display:grid;grid-template-columns:60px minmax(0,1fr);grid-template-rows:auto auto;gap:6px;padding:10px}
-.dashboard-panel .firmware-visual{grid-row:1/3;margin:0;min-height:0;height:100%}
-.dashboard-panel .firmware-visual img{height:100%;min-height:0}
-.dashboard-panel .firmware-caption{display:none!important}
-.dashboard-panel .firmware-tile-heading{flex-wrap:wrap;align-self:end}
-.dashboard-panel .firmware-tile-heading strong{font-size:12px}
-.dashboard-panel .media-brands{margin:0;align-self:start}
-.dashboard-panel .update-summary p{font-size:11px;line-height:1.6}
-.dashboard-panel .summary-icon{display:none}
-.dashboard-panel .route-label{margin:10px 0 5px}
-@media(max-width:1100px){.dashboard-panel .overview-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}.dashboard-panel .details-card{gap:5px 12px;padding:12px}.dashboard-panel .printer-title h2{font-size:17px}.dashboard-panel .version-option.firmware-tile{grid-template-columns:38px minmax(0,1fr);gap:4px;padding:7px}.dashboard-panel .firmware-tile-heading strong{font-size:10px}.dashboard-panel .media-brand{font-size:7px;padding:2px}.dashboard-panel .firmware-revision{font-size:9px;padding:2px}.dashboard-panel .firmware-current strong span{font-size:6px;padding:3px}.dashboard-panel .metrics strong{font-size:20px}}
-@media(max-width:900px){.dashboard-panel{gap:12px}.dashboard-panel .overview-grid{min-height:160px}.dashboard-panel .details-card{grid-template-columns:minmax(90px,.7fr) minmax(0,1fr)}.dashboard-panel .printer-card{grid-template-columns:38% minmax(0,1fr)}.dashboard-panel .printer-title{padding:8px}.dashboard-panel .device-footer{padding:8px;font-size:8px}.dashboard-panel .details-card .card-top h2{font-size:12px}.dashboard-panel dl>div{font-size:9px;margin:6px 0}.dashboard-panel .firmware-current strong{font-size:25px}.dashboard-panel .metrics{gap:6px}.dashboard-panel .metrics strong{font-size:18px}.dashboard-panel .metrics span{font-size:7px}.dashboard-panel .update-card{padding:12px}.dashboard-panel .update-layout{gap:10px}.dashboard-panel .update-summary p{font-size:9px;line-height:1.4}.dashboard-panel .update-summary small{display:none}.dashboard-panel .route-label{margin:7px 0 4px}.dashboard-panel .route-chip{padding:1px 4px}}
-@media(max-height:650px){header{height:34px}.page-heading{padding:9px 0}.page-heading h1{font-size:25px}.dashboard-panel{gap:10px}.dashboard-panel .overview-grid{min-height:145px;flex-basis:30%}.dashboard-panel .details-card{padding:10px 12px;gap:4px 10px}.dashboard-panel .details-card h2{font-size:12px}.dashboard-panel dl>div{margin:6px 0;font-size:9px}.dashboard-panel .firmware-current strong{font-size:24px}.dashboard-panel .metrics{padding-top:5px}.dashboard-panel .metrics strong{font-size:19px}.dashboard-panel .printer-card .card-top{padding:10px 12px 0}.dashboard-panel .printer-title h2{font-size:17px}.dashboard-panel .printer-title{padding:8px}.dashboard-panel .device-footer{padding:7px 8px;font-size:8px}.dashboard-panel .update-card{padding:10px 12px}.dashboard-panel .field-heading{margin-bottom:6px}.dashboard-panel .update-summary button{margin-top:10px;margin-bottom:4px}.dashboard-panel .update-summary p{font-size:10px;line-height:1.4}}
-@media(max-width:650px){.dashboard-panel .overview-grid{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}.dashboard-panel .printer-card{grid-template-columns:1fr}.dashboard-panel .printer-visual{display:none}.dashboard-panel .printer-title,.dashboard-panel .device-footer{grid-column:1}.dashboard-panel .details-card{grid-template-columns:minmax(80px,.6fr) minmax(0,1fr)}.dashboard-panel dl>div{flex-direction:row;gap:4px;margin:5px 0;font-size:8px}.dashboard-panel dd{text-align:right}.dashboard-panel .firmware-current strong span{display:none}.dashboard-panel .metrics strong{font-size:16px}.dashboard-panel .version-option.firmware-tile{grid-template-columns:26px minmax(0,1fr);padding:5px;gap:3px}.dashboard-panel .media-brand{font-size:6px}.dashboard-panel .update-summary p{font-size:8px}.dashboard-panel .update-summary button{margin:0;padding:8px;font-size:9px}}
+/* Dashboard components: readable information and media illustrations. */
+.dashboard-panel { display: flex; flex-direction: column; gap: 18px; }
+.overview-grid { display: grid; flex: 0 0 clamp(210px, 27vh, 245px); min-height: 210px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr); grid-template-rows: minmax(0, 1fr); gap: 18px; }
+.printer-card { min-height: 0; display: grid; grid-template-columns: 43% minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
+.printer-card .card-top { grid-column: 1 / -1; padding: 16px 20px 0; }
+.printer-visual { grid-row: 2 / 4; min-height: 0; height: auto; background: none; padding: 8px 0 12px 12px; }
+.printer-visual img { height: 100%; width: 100%; max-height: 190px; object-fit: contain; }
+.visual-orbit, .visual-caption { display: none; }
+.printer-title { padding: 14px 18px 8px; min-width: 0; }
+.printer-title h2 { font-size: 24px; line-height: 1.15; }
+.printer-title p { font-size: 13px; color: #64756a; overflow-wrap: anywhere; }
+.device-footer { grid-column: 2; padding: 12px 18px; font-size: 12px; color: #5c7162; gap: 8px; flex-wrap: wrap; }
+.details-card { min-width: 0; min-height: 0; display: grid; grid-template-columns: minmax(155px, .85fr) minmax(0, 1.2fr); grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px 24px; padding: 18px 22px; }
+.details-card .card-top { grid-column: 1 / -1; }
+.details-card h2 { font-size: 17px; }
+.firmware-current { padding: 0; border: 0; }
+.muted { font-size: 13px; color: #68796b; }
+.firmware-current strong { font-size: 34px; gap: 7px; flex-wrap: wrap; margin-top: 5px; }
+.firmware-current strong span { font-size: 10px; letter-spacing: .3px; padding: 5px 7px; }
+.details-card dl { grid-column: 2; grid-row: 2 / 4; margin: 0; align-self: center; }
+dl > div { margin: 12px 0; font-size: 13px; gap: 12px; }
+dt { color: #68796c; }
+dd { color: #354f40; }
+.metrics { grid-column: 1; padding: 10px 0 0; gap: 14px; }
+.metrics strong { font-size: 25px; }
+.metrics span { font-size: 11px; color: #697c68; line-height: 1.4; }
+.metrics > div + div { padding-left: 14px; }
+.update-card { margin: 0; flex: 1; min-height: 0; padding: 20px; display: flex; flex-direction: column; }
+.section-heading { display: none; }
+.update-layout { display: grid; flex: 1; min-height: 0; margin: 0; grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); gap: 24px; }
+.update-layout > div:first-child { display: flex; flex-direction: column; min-height: 0; }
+.field-heading { font-size: 13px; margin-bottom: 12px; }
+.field-heading > span { font-size: 12px; color: #647763; }
+.version-options { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.version-option.firmware-tile { min-height: 0; min-width: 0; padding: 12px; display: flex; flex-direction: column; justify-content: center; gap: 9px; border-radius: 12px; border: 1px solid #dbe5de; background: #fff; text-align: left; overflow: hidden; }
+.firmware-tile.active { border-color: #4d7b60; background: #f6faf5; box-shadow: 0 0 0 2px #4d7b6026; }
+.firmware-tile:hover:not(:disabled) { border-color: #759987; background: #f8fbf8; transform: none; }
+.firmware-visual { display: flex; align-items: center; justify-content: center; flex: 1; min-height: 34px; max-height: 85px; height: auto; margin: 0; border-radius: 8px; background: #eef5fb; }
+.firmware-visual img { display: block; width: 100%; height: 100%; min-height: 0; max-height: 85px; object-fit: contain; }
+.firmware-di .firmware-visual { background: #edf7f1; }
+.firmware-vg .firmware-visual { background: linear-gradient(110deg, #e6f1ff, #e5f6ee 50%, #f6eaf2); }
+.firmware-tile-heading { display: flex; justify-content: space-between; align-items: center; gap: 7px; line-height: 1.25; }
+.firmware-tile-heading strong { font-size: 15px; letter-spacing: -.2px; }
+.firmware-revision { font-size: 13px; padding: 4px 7px; border-radius: 5px; background: #eaf0eb; color: #435f4d; white-space: nowrap; }
+.firmware-caption { display: none !important; }
+.media-brands { display: flex; flex-wrap: wrap; gap: 5px; margin: 0; }
+.media-brand { padding: 4px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
+.brand-dnp { background: #e4effb; color: #245e88; }
+.brand-di { background: #dff0e6; color: #2d6a52; }
+.brand-citizen { background: #f4e5ee; color: #824668; }
+.route-label { font-size: 11px; letter-spacing: .8px; color: #61755e; margin: 14px 0 7px; }
+.route { flex: none; font-size: 12px; gap: 6px; line-height: 1.5; color: #536b48; }
+.route-chip { padding: 4px 6px; }
+.update-summary { display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #e4eade; border-top: 0; padding: 0 0 0 24px; }
+.summary-icon { display: none; }
+.update-summary h3 { font-size: 20px; line-height: 1.3; margin: 0 0 12px; }
+.update-summary p { font-size: 14px; line-height: 1.65; max-width: none; color: #637565; }
+.update-summary button { width: 100%; max-width: none; margin: 20px 0 12px; }
+.update-summary small { font-size: 11px; line-height: 1.5; color: #6c7c66; text-align: left; }
+@media (max-width: 1150px) {
+  .dashboard-panel { gap: 14px; }
+  .overview-grid { flex-basis: 200px; min-height: 200px; grid-template-columns: minmax(0, .75fr) minmax(0, 1.3fr); gap: 14px; }
+  .printer-card { grid-template-columns: 36% minmax(0, 1fr); }
+  .printer-title { padding: 10px 12px; }
+  .printer-title h2 { font-size: 20px; }
+  .printer-title p { font-size: 12px; }
+  .device-footer { padding: 10px 12px; font-size: 11px; }
+  .details-card { grid-template-columns: minmax(120px, .7fr) minmax(0, 1fr); gap: 8px 14px; padding: 14px 16px; }
+  .details-card h2 { font-size: 16px; }
+  .details-card dl > div { flex-direction: column; gap: 2px; margin: 7px 0; font-size: 12px; }
+  dd { text-align: left; }
+  .firmware-current strong { font-size: 30px; }
+  .metrics { gap: 8px; }
+  .metrics strong { font-size: 22px; }
+  .metrics > div + div { padding-left: 8px; }
+  .update-card { padding: 16px; }
+  .update-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
+  .version-option.firmware-tile { display: grid; grid-template-columns: 78px minmax(0, 1fr); grid-template-rows: auto auto; gap: 5px 10px; padding: 10px; }
+  .firmware-visual { grid-row: 1 / 3; height: 100%; max-height: none; }
+  .firmware-visual img { max-height: 70px; }
+  .firmware-tile-heading { flex-wrap: wrap; align-self: end; }
+  .firmware-tile-heading strong { font-size: 14px; }
+  .media-brands { align-self: start; gap: 3px; }
+  .media-brand { font-size: 10px; padding: 3px 4px; }
+  .update-summary { padding: 12px 0 0; border-left: 0; border-top: 1px solid #e4eade; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 18px; }
+  .update-summary h3 { font-size: 17px; margin: 0; }
+  .update-summary p { font-size: 12px; line-height: 1.4; margin: 0; }
+  .update-summary button { grid-column: 2; grid-row: 1 / 3; margin: 0; align-self: center; }
+  .update-summary small { display: none; }
+}
+@media (max-width: 950px) {
+  .overview-grid { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }
+  .printer-card { grid-template-columns: 1fr; }
+  .printer-visual { display: none; }
+  .printer-title, .device-footer { grid-column: 1; }
+  .version-option.firmware-tile { grid-template-columns: 62px minmax(0, 1fr); gap: 4px 7px; padding: 8px; }
+  .version-options { gap: 8px; }
+  .firmware-tile-heading strong { font-size: 13px; }
+  .firmware-revision { font-size: 12px; padding: 3px 4px; }
+}
+@media (max-height: 740px) {
+  .overview-grid { flex-basis: 190px; min-height: 190px; }
+  .dashboard-panel { gap: 12px; }
+  .details-card { padding-top: 12px; padding-bottom: 12px; gap: 6px 14px; }
+  .firmware-current strong { font-size: 28px; }
+  .details-card dl > div { margin: 8px 0; }
+  .metrics { padding-top: 6px; }
+  .update-card { padding: 14px; }
+  .version-option.firmware-tile { padding: 9px; gap: 6px; }
+  .firmware-visual { min-height: 28px; }
+  .route-label { margin-top: 10px; }
+}
+@media (max-width: 760px) {
+  .overview-grid { grid-template-columns: minmax(0, .55fr) minmax(0, 1.45fr); }
+  .details-card { grid-template-columns: 110px minmax(0, 1fr); padding: 12px; gap: 6px 10px; }
+  .details-card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+  .details-card dl > div { margin: 0; font-size: 11px; }
+  .printer-card .card-top { padding: 12px 10px 0; flex-wrap: wrap; gap: 5px; }
+  .printer-title h2 { font-size: 18px; }
+  .printer-title p { font-size: 11px; }
+  .version-option.firmware-tile { grid-template-columns: 55px minmax(0, 1fr); padding: 7px; }
+  .update-summary { gap: 5px 12px; }
+  .update-summary h3 { font-size: 15px; }
+}
 
-@media(max-width:1100px){.shell{grid-template-columns:180px minmax(0,1fr)}}
-@media(max-width:900px){.shell{grid-template-columns:145px minmax(0,1fr)}}
+@media (min-width: 1151px) and (max-width: 1500px) {
+  .version-option.firmware-tile { display: grid; grid-template-columns: 90px minmax(0, 1fr); grid-template-rows: auto auto; gap: 5px 10px; padding: 10px; }
+  .firmware-visual { grid-row: 1 / 3; height: 100%; max-height: none; }
+  .firmware-visual img { max-height: 70px; }
+  .firmware-tile-heading { flex-wrap: wrap; align-self: end; }
+  .media-brands { align-self: start; gap: 3px; }
+  .media-brand { font-size: 10px; padding: 3px 4px; }
+}
+@media (max-width: 1150px) {
+  .version-option.firmware-tile { grid-template-rows: minmax(0, 1fr) auto; gap: 6px 9px; }
+  .firmware-visual { grid-row: 1; max-height: 65px; }
+  .firmware-tile-heading { align-self: center; justify-content: flex-start; }
+  .media-brands { grid-column: 1 / -1; }
+}
+@media (max-height: 740px) {
+  .page-heading { padding: 15px 0; }
+  .page-heading p { display: none; }
+  h1 { margin: 0; line-height: 1.2; }
+  .overview-grid { flex-basis: 180px; min-height: 180px; }
+  .details-card dl > div { margin: 5px 0; }
+  .details-card { gap: 5px 14px; }
+  .firmware-current strong span { font-size: 9px; padding: 3px 5px; }
+  .metrics span { font-size: 10px; }
+  .update-summary p { font-size: 12px; }
+}
 
-@media(max-width:900px){header{display:none}.dashboard-panel .overview-grid{min-height:175px;grid-template-rows:minmax(0,1fr)}.dashboard-panel .details-card{min-height:0}}
+/* Stable text rows prevent the firmware badge from overlapping counters. */
+.firmware-current strong span { display: none; }
+@media (max-width: 1500px) {
+  .version-option.firmware-tile { grid-template-columns: 80px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 6px 9px; }
+  .firmware-visual { grid-row: 1; }
+  .firmware-tile-heading { align-self: center; }
+  .media-brands { grid-column: 1 / -1; }
+}
+@media (max-width: 1150px) {
+  .details-card dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+  .details-card dl > div { margin: 0; }
+  .version-option.firmware-tile { grid-template-columns: 60px minmax(0, 1fr); }
+  .update-summary { padding-top: 10px; }
+  .update-summary h3 { font-size: 16px; }
+  .update-summary p { font-size: 12px; }
+  .update-summary button { max-width: 200px; }
+}
+@media (max-height: 740px) and (max-width: 1150px) {
+  .overview-grid { flex-basis: 170px; min-height: 170px; }
+  .field-heading { margin-bottom: 8px; }
+  .route-label { margin: 8px 0 5px; }
+  .route-chip { padding: 2px 5px; }
+  .update-summary p { display: none; }
+  .update-summary { grid-template-rows: auto; padding-top: 10px; }
+  .update-summary button { grid-row: 1; }
+}

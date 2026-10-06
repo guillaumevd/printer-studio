@@ -5,6 +5,7 @@ const dnpVersions = ['02.04', '02.07', '02.10', '02.21'];
 const vgTarget = 'VG-02.21';
 const diTarget = 'DI-RS1 01.02';
 export const versions = [...dnpVersions, diTarget, vgTarget];
+let cardsSignature = '';
 export function routeFor(printer, target) {
   if (!printer) return [];
   if (target === diTarget) return printer.firmware.startsWith('DS-RX1 ') ? [diTarget] : [];
@@ -22,8 +23,14 @@ export function routeFor(printer, target) {
 
 export function renderFirmware(printer, target, state, running) {
   const steps = routeFor(printer, target);
-  $('version-options').replaceChildren(...versions.map(version =>
-    firmwareCard(version, target, state.catalog?.find(item => item.version === version), running)));
+  const signature = JSON.stringify([target, running, state.catalog?.map(item => [item.version, item.available])]);
+  if (signature !== cardsSignature) {
+    const focusedVersion = document.activeElement?.closest('[data-version]')?.dataset.version;
+    $('version-options').replaceChildren(...versions.map(version =>
+      firmwareCard(version, target, state.catalog?.find(item => item.version === version), running)));
+    cardsSignature = signature;
+    if (focusedVersion) [...$('version-options').children].find(card => card.dataset.version === focusedVersion)?.focus({preventScroll: true});
+  }
   $('route').replaceChildren();
   if (steps.length) {
     [printer.firmware.replace(/^(DS-RX1|DI-RS1) /, ''), ...steps].forEach((version, index) => {
@@ -33,6 +40,10 @@ export function renderFirmware(printer, target, state, running) {
   } else text('route', !printer ? 'Connect a printer to calculate the route.' : target === diTarget && printer.firmware === diTarget ? 'Original DI-RS1 1.02 is already installed.' : target === vgTarget && printer.edition === vgTarget ? 'VG-RX1HS 2.21 is already installed.' : printer.firmware === 'DS-RX1 ' + target ? 'This version is already installed.' : 'No supported route to this version.');
   const downgrade = dnpVersions.includes(target) && printer?.firmware?.startsWith('DS-RX1 ') && dnpVersions.indexOf(target) < dnpVersions.indexOf(printer.firmware.slice(7));
   text('update-title', target === diTarget ? 'Install original DI-RS1 1.02' : target === vgTarget ? 'Install DNP VG-RX1HS 2.21' : downgrade ? 'Return to DNP ' + target : printer?.firmware === 'DS-RX1 ' + target ? 'Reinstall stock DNP ' + target : 'Install DNP ' + target);
-  text('update-description', target === diTarget || target === vgTarget ? state.catalog?.find(item => item.version === target)?.description : 'Original DNP media acceptance only. Installing stock DNP removes the VG support for DI Support and Citizen media. Automatic source detection and verification after each restart.');
+  text('update-description', target === diTarget
+    ? 'Original DI Support media. Restores compatible converted DI-RS1 printers with their original DI bootloader.'
+    : target === vgTarget
+      ? 'Accepts DNP, DI Support and Citizen CY-02 media. Keeps the existing driver and Hot Folder compatibility.'
+      : 'Original DNP media only. Replaces VG media support with the stock DNP firmware.');
   $('update').disabled = !steps.length || !printer?.serial || running || state.interrupted || !steps.every(v => state.catalog?.find(x => x.version === v)?.available);
 }

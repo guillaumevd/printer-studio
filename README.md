@@ -1,6 +1,6 @@
 # Printer Studio
 
-Version 1.8.0 offers a shared illustrated catalog for DNP, original DI-RS1 and
+Version 1.8.1 offers a shared illustrated catalog for DNP, original DI-RS1 and
 **DNP VG-RX1HS 2.21**, the custom edition tested with DNP,
 DI Support and Citizen CY-02 media on the converted DI-RS1. Printer Studio
 detects this edition automatically. Stock DNP images remain separate and retain

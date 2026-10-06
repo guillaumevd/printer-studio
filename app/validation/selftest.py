@@ -86,6 +86,8 @@ def run(report):
                 assert result["ui"]["firmwareCards"] == 6 and result["ui"]["mediaIconsLoaded"]
                 result["tabs"] = window.evaluate_js("({logsHidden:document.getElementById('activity').hidden,fits:document.documentElement.scrollHeight<=innerHeight})")
                 assert all(result["tabs"].values()), result["tabs"]
+                result["layout"] = window.evaluate_js("({cardsFit:Array.from(document.querySelectorAll('.firmware-tile')).every(e=>e.scrollHeight<=e.clientHeight+1),informationFits:Array.from(document.querySelectorAll('.overview-grid .card')).every(e=>e.scrollHeight<=e.clientHeight+1),noHorizontalOverflow:document.documentElement.scrollWidth<=innerWidth+1,readableLabels:Array.from(document.querySelectorAll('.media-brand,.metrics span,dl>div')).every(e=>parseFloat(getComputedStyle(e).fontSize)>=11)})")
+                assert all(result["layout"].values()), result["layout"]
                 window.evaluate_js("document.querySelector('[href=\"#activity\"]').click()")
                 assert window.evaluate_js("!document.getElementById('activity').hidden && document.getElementById('overview').hidden")
                 window.evaluate_js("document.querySelector('[href=\"#overview\"]').click()")
