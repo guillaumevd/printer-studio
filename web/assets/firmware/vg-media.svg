@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="110" viewBox="0 0 240 110">
+ <defs><linearGradient id="vg" x1="0" x2="1"><stop stop-color="#477fac"/><stop offset=".5" stop-color="#4c977e"/><stop offset="1" stop-color="#a26b8f"/></linearGradient></defs>
+ <path d="M32 73c35 23 57-25 88-10s55 28 88-8" fill="none" stroke="url(#vg)" stroke-width="7" opacity=".25"/>
+ <g stroke-width="1.5">
+  <rect x="23" y="28" width="62" height="47" rx="9" fill="#fff" stroke="#95b7d3"/><circle cx="73" cy="73" r="12" fill="#e4f0fc" stroke="#95b7d3"/><circle cx="73" cy="73" r="4" fill="#fff" stroke="#95b7d3"/>
+  <rect x="89" y="21" width="62" height="47" rx="9" fill="#fff" stroke="#97c6b4"/><circle cx="139" cy="66" r="12" fill="#e4f3ea" stroke="#97c6b4"/><circle cx="139" cy="66" r="4" fill="#fff" stroke="#97c6b4"/>
+  <rect x="155" y="28" width="62" height="47" rx="9" fill="#fff" stroke="#c6a5ba"/><circle cx="205" cy="73" r="12" fill="#f4e8f0" stroke="#c6a5ba"/><circle cx="205" cy="73" r="4" fill="#fff" stroke="#c6a5ba"/>
+ </g>
+ <g font-family="Arial,sans-serif" font-weight="bold" text-anchor="middle"><text x="54" y="56" font-size="17" fill="#2873ad">DNP</text><text x="120" y="46" font-size="23" fill="#397e6b">di</text><text x="120" y="57" font-size="6" letter-spacing="1" fill="#397e6b">SUPPORT</text><text x="186" y="54" font-size="10" letter-spacing=".5" fill="#89516f">CITIZEN</text></g>
+ <path d="M82 94h76" stroke="url(#vg)" stroke-width="3" stroke-linecap="round"/>
+</svg>

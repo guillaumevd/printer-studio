@@ -1,0 +1,21 @@
+.version-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.version-option.firmware-tile{position:relative;display:flex;flex-direction:column;align-items:stretch;text-align:left;min-width:0;padding:12px;border:1px solid #e2e8e6;border-radius:14px;background:#fff;color:#294039;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s}
+.firmware-tile:hover:not(:disabled){transform:translateY(-2px);border-color:#93ad9d;box-shadow:0 7px 20px #2940390c}
+.firmware-tile.active{border-color:#537d62;box-shadow:0 0 0 2px #537d6224;background:#f8fbf7}
+.firmware-tile:focus-visible{outline:3px solid #6b9575;outline-offset:3px}
+.firmware-visual{display:flex;align-items:center;justify-content:center;height:92px;border-radius:9px;background:#f1f6fb;margin-bottom:13px}
+.firmware-visual img{display:block;width:100%;height:92px;object-fit:contain}
+.firmware-di .firmware-visual{background:#edf7f6}
+.firmware-vg .firmware-visual{background:linear-gradient(115deg,#e5f0ff 0%,#e4f6ee 49%,#f7eaf2 100%)}
+.firmware-tile-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;line-height:1.3}
+.firmware-tile-heading strong{font-size:13px;font-weight:650;letter-spacing:-.3px}
+.firmware-revision{font-size:11px;font-weight:600;padding:4px 6px;border-radius:6px;background:#eef2ef;color:#61766b;white-space:nowrap}
+.firmware-tile small.firmware-caption{display:block;margin-top:6px;font-size:10px;font-weight:400;letter-spacing:0;line-height:1.5;color:#829188}
+.media-brands{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.media-brand{display:inline-flex;align-items:center;border-radius:5px;padding:4px 6px;font-size:9px;font-weight:650;line-height:1;white-space:nowrap}
+.brand-dnp{background:#e9f2ff;color:#27699a}.brand-di{background:#e4f4ee;color:#357667}.brand-citizen{background:#f6eaf0;color:#8d4e72}
+.firmware-vg.active{border-color:#7a8a91;box-shadow:0 0 0 2px #90a7a324}
+.firmware-tile:disabled{opacity:.5;transform:none;box-shadow:none}
+@media(max-width:760px){.version-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.version-options{grid-template-columns:1fr}.firmware-visual,.firmware-visual img{height:105px}}
+@media(prefers-reduced-motion:reduce){.version-option.firmware-tile{transition:none}}

@@ -38,6 +38,9 @@ Name: "{group}\Printer Studio"; Filename: "{app}\Printer Studio.exe"; WorkingDir
 Name: "{autodesktop}\Printer Studio"; Filename: "{app}\Printer Studio.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 Name: "{group}\Printer Studio Demo"; Filename: "{app}\Printer Studio.exe"; Parameters: "--demo --port 8766"; WorkingDir: "{app}"
 
+[InstallDelete]
+Type: files; Name: "{app}\_internal\web\scripts\components\di-restore.js"
+
 [Run]
 Filename: "{app}\Printer Studio.exe"; Description: "Launch Printer Studio"; Flags: nowait postinstall skipifsilent
 

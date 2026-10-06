@@ -2,6 +2,7 @@ import {$, text} from '../dom.js';
 
 export function renderActivity(job, running) {
   $('scan').disabled = running;
+  document.querySelector('[href="#activity"]').classList.toggle('operation-running', running);
   $('export').disabled = !job;
   text('job-status', job ? ({running: 'Operation in progress', success: 'Firmware change complete', error: 'Operation stopped · inspection required'}[job.status] + ' · ' + job.completed + ' / ' + job.steps.length + ' verified steps') : 'No operation in progress');
   $('steps-progress').replaceChildren(...(job?.steps || []).map((_, index) => {

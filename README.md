@@ -1,5 +1,32 @@
 # Printer Studio
 
+Version 1.8.0 offers a shared illustrated catalog for DNP, original DI-RS1 and
+**DNP VG-RX1HS 2.21**, the custom edition tested with DNP,
+DI Support and Citizen CY-02 media on the converted DI-RS1. Printer Studio
+detects this edition automatically. Stock DNP images remain separate and retain
+their original DNP-only media policy. See [VG-RX1HS details](docs/vg-rx1hs.md).
+The DS-RX1 USB/protocol identity stays unchanged for existing drivers and Hot
+Folder; external software can continue to show RX1HS.
+
+Printer, firmware and activity have separate tabs that fit the window height.
+The log is shown only when selected; its entries can scroll inside that tab.
+
+The application also supports return to original **DI-RS1 01.02** for DI-RS1 printers
+previously converted to DNP. Firmware restoration from DNP 2.21 and subsequent
+printing were verified on the project's printer on 6 October 2026. Factory DNP
+printers are not supported. The bridge verifies the original DI boot/recovery,
+firmware checksum and printer identity, then uses the existing DI update transport.
+It does not make an automatic firmware backup before transfer. The recovered
+package includes only application firmware, excluding donor settings and identity.
+Final checks require DI firmware/model, unchanged serial and CWD. Other DNP
+source versions remain supported by the guards but untested for restoration on hardware.
+Private printer logs are not uploaded by the app.
+
+The recovered DI payload is excluded from Git and must be supplied locally for
+this build as `firmware/DI-RS1_0102.bin` with the hash locked in
+`app/firmware/di_support.py`; it is included in the local installer and portable
+package. The public runtime archive from 1.5.0 does not contain this new payload.
+
 A Windows desktop application for managing DNP firmware on a converted DI Support DI-RS1.
 Python backend, local HTML interface, native USB bridge and a dedicated WebView2 window.
 
@@ -35,7 +62,7 @@ are verified after restart. Do not use other printer utilities during a transfer
 
 Bundled catalog: DNP **02.04, 02.07, 02.10, 02.21**. Upgrades follow successive
 versions; downgrades send the selected image directly. Same-version transfers are
-blocked. DI Support restoration is not offered.
+blocked. A separate action restores original DI-RS1 01.02 on compatible converted DI printers.
 
 The upward sequence and the 02.21 â†’ 02.10 downgrade have been verified on the
 project's converted printer. Other downward transitions remain unverified on

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="110" viewBox="0 0 240 110">
+  <rect x="69" y="26" width="103" height="57" rx="9" fill="#fff" stroke="#87b6ab" stroke-width="2"/>
+  <path d="M112 35v38m7-38v38" stroke="#87b6ab" stroke-width="2" opacity=".4"/>
+  <circle cx="175" cy="73" r="20" fill="#d9eee7" stroke="#87b6ab" stroke-width="2"/><circle cx="175" cy="73" r="8" fill="#fff" stroke="#87b6ab" stroke-width="2"/>
+  <rect x="43" y="39" width="63" height="36" rx="7" fill="#397e6b"/><text x="74" y="58" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle">di</text><text x="74" y="69" fill="#d9eee7" font-family="Arial,sans-serif" font-size="8" letter-spacing="1" text-anchor="middle">SUPPORT</text>
+  <path d="M100 88h44" stroke="#b1d4c9" stroke-width="2" stroke-linecap="round"/>
+</svg>

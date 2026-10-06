@@ -30,11 +30,11 @@ with tempfile.TemporaryDirectory() as folder:
         window = webview.windows[0]
         time.sleep(2)
         try:
-            result.update(window.evaluate_js("({title:document.title, model:document.getElementById('model').textContent, restoreRemoved:!document.getElementById('restore'), language:document.documentElement.lang, illustration:document.querySelector('.printer-visual img').getAttribute('src')})"))
+            result.update(window.evaluate_js("({title:document.title, model:document.getElementById('model').textContent, restorePresent:!!document.getElementById('di-restore'),diCardPresent:!!document.querySelector('[data-version=\"DI-RS1 01.02\"]'), language:document.documentElement.lang, illustration:document.querySelector('.printer-visual img').getAttribute('src')})"))
             result["icon"] = window.native.Icon is not None
             result["icon_width"] = window.native.Icon.Width
             assert result["model"] == "DNP DS-RX1", result
-            assert result["restoreRemoved"] and result["language"] == "en", result
+            assert not result["restorePresent"] and result["diCardPresent"] and result["language"] == "en", result
             window.evaluate_js("document.querySelector('[data-version=\"02.04\"]').click()")
             result["downgrade"] = window.evaluate_js("({route:document.getElementById('route').textContent,title:document.getElementById('update-title').textContent,enabled:!document.getElementById('update').disabled})")
             assert result["downgrade"]["enabled"], result

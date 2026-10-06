@@ -6,6 +6,7 @@ import secrets
 from urllib.parse import urlsplit
 from app.core.paths import ROOT
 from app.firmware.catalog import catalog
+from app.firmware.di_support import status as di_restore_status
 from app.core.paths import VERSION
 
 def make_server(service, port):
@@ -34,7 +35,7 @@ def make_server(service, port):
                 return self.send(403, {"error": "Host rejected"})
             path = urlsplit(self.path).path
             if path == "/api/state":
-                return self.send(200, dict(**service.snapshot(), catalog=catalog(), token=token,
+                return self.send(200, dict(**service.snapshot(), catalog=catalog(), di_restore=di_restore_status(), token=token,
                                           application="printer-studio", version=VERSION))
             if path == "/api/log":
                 return self.send(200, service.snapshot().get("job"))
@@ -62,6 +63,9 @@ def make_server(service, port):
                 if self.path == "/api/update":
                     if data.get("confirmed") is not True:
                         raise ValueError("Confirm the firmware change.")
+                    if any(not isinstance(data.get(key), str) or not data[key].strip()
+                           for key in ("serial", "source", "target")):
+                        raise ValueError("Printer identity, source and target firmware are required.")
                     return self.send(202, service.start(data.get("serial"), data.get("source"), data.get("target")))
                 return self.send(404, {"error": "Unknown action"})
             except (ValueError, KeyError, TypeError) as exc:

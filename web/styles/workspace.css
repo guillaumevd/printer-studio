@@ -1,0 +1,58 @@
+/* Viewport layout: each workspace has its own space; only log entries scroll. */
+html,body{height:100%;overflow:hidden}
+.shell{height:100dvh;min-height:0;max-width:none}
+.sidebar{height:100%;position:static;padding:28px 20px}
+.nav-label{margin-top:38px}
+main{height:100%;min-height:0;max-width:1600px;padding:0 30px 14px;display:flex;flex-direction:column}
+header{height:56px;flex:none}
+.page-heading{padding:19px 0 17px;flex:none}
+h1{font-size:32px;margin:0 0 4px}
+.page-heading p{margin:0}
+.demo-banner{margin-top:10px;padding:7px 12px;flex:none}
+.notice{padding:8px 12px;margin-bottom:10px;flex:none}
+.workspace-panel{flex:1;min-height:0;margin:0}
+footer{flex:none;padding-top:12px}
+.overview-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.printer-card{display:flex;flex-direction:column;min-height:0}
+.printer-visual{flex:1;min-height:0;height:auto}
+.printer-visual img{height:90%;max-height:400px;width:90%;object-fit:contain}
+.visual-orbit{width:70%;height:65%;max-height:300px}
+.visual-caption{bottom:10px}
+.printer-title{padding:18px 25px}
+.details-card{display:flex;flex-direction:column;justify-content:space-between;min-width:0;padding:26px}
+.firmware-current{padding:20px 0}
+.firmware-current strong{font-size:38px}
+dl{margin:10px 0}
+dl>div{font-size:12px;margin:18px 0}
+.metrics{padding:22px 0 6px}
+.metrics strong{font-size:30px}
+.update-card{padding:22px;display:flex;flex-direction:column}
+.section-heading{flex:none}
+.section-heading h2{font-size:21px;margin:5px 0}
+.update-layout{flex:1;min-height:0;grid-template-columns:minmax(0,2fr) minmax(230px,1fr);gap:24px;margin-top:16px}
+.update-layout>div:first-child{display:flex;flex-direction:column;min-height:0}
+.version-options{flex:1;min-height:0;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+.firmware-tile{min-height:0}
+.firmware-visual{flex:1;min-height:28px;height:auto;margin-bottom:8px}
+.firmware-visual img{height:100%;min-height:0;max-height:130px}
+.firmware-tile .media-brands{margin-top:8px}
+.route-label{margin:14px 0 7px}
+.route{flex:none;gap:5px}
+.update-summary{display:flex;flex-direction:column;justify-content:center;padding-left:24px;border-top:0;border-left:1px solid #e9eedf}
+.summary-icon{float:none;margin-bottom:16px;flex:none}
+.update-summary p{max-width:none;font-size:12px}
+.update-summary button{max-width:none;flex:none}
+.activity-card{padding:24px;display:flex;flex-direction:column}
+.activity-card .card-top,.job-status,.steps-progress{flex:none}
+.events{flex:1;min-height:0;max-height:none;overflow:auto}
+.event{font-size:12px;padding:12px 0}
+.empty-log{height:100%}
+.nav-item.operation-running::after{content:'';width:7px;height:7px;border-radius:50%;background:#779752;margin-left:auto;box-shadow:0 0 0 4px #edf3e6}
+@media(max-height:750px){.sidebar{padding-top:20px}.nav-label{margin-top:25px}header{height:46px}.page-heading{padding:13px 0}h1{font-size:28px}.details-card{padding:20px}.firmware-current{padding:12px 0}.firmware-current strong{font-size:30px}dl>div{margin:12px 0}.metrics{padding-top:14px}.metrics strong{font-size:25px}.update-card{padding:16px}.section-heading p{display:none}.update-layout{margin-top:12px}.firmware-tile small.firmware-caption{font-size:9px}.firmware-tile .media-brands{margin-top:6px}.route-label{margin-top:10px}.sidebar-bottom small{margin-bottom:10px}.sidebar-bottom>div{padding-top:12px}}
+@media(max-width:1100px){.shell{grid-template-columns:180px 1fr}main{padding-left:20px;padding-right:20px}.update-layout{grid-template-columns:minmax(0,1fr) 220px;gap:16px}.update-summary{padding:0 0 0 16px}.firmware-tile-heading{flex-wrap:wrap}.firmware-tile-heading strong{font-size:11px}.version-option.firmware-tile{padding:9px}.media-brand{font-size:8px;padding:3px 4px}.details-card{padding:18px}dl>div{font-size:10px}}
+@media(max-width:900px){.shell{grid-template-columns:145px 1fr}.sidebar{padding:20px 10px}.brand{font-size:15px;gap:6px}.brand-icon{width:26px;height:30px}.brand small{font-size:6px;letter-spacing:1px}.nav-item{font-size:11px;gap:6px;padding:12px 8px}.sidebar-bottom{padding-left:5px;padding-right:5px}.update-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}.update-summary{border-left:0;border-top:1px solid #e9eedf;padding:10px 0 0;display:grid;grid-template-columns:1fr auto;gap:4px 12px}.summary-icon{display:none}.update-summary h3{margin:0}.update-summary p{font-size:10px;margin:0}.update-summary button{grid-column:2;grid-row:1/3;margin:0}.update-summary small{grid-column:1/-1;text-align:left}.section-heading .subtle-badge{display:none}.overview-grid{gap:12px}.printer-title{padding:12px 15px}.printer-title h2{font-size:18px}.device-footer{padding:10px 15px;font-size:9px}.printer-card .card-top{padding:15px 15px 0}.firmware-current strong{gap:6px}.firmware-current strong span{font-size:6px}.metrics{gap:10px}.metrics>div+div{padding-left:12px}.visual-caption{letter-spacing:1px}}
+@media(max-width:650px){.shell{display:flex;flex-direction:column}.sidebar{height:auto;flex:none;flex-direction:row;align-items:center;gap:5px;padding:10px 12px}.brand{margin-right:auto}.brand small,.nav-label,.sidebar-bottom{display:none}.nav-item{display:flex;margin:0;padding:8px;font-size:10px}.nav-item>span{display:none}.nav-item i{display:none}main{padding:0 12px 10px}.local-pill{font-size:7px;padding:6px}.page-heading{gap:8px;flex-direction:row;align-items:center}.page-heading p{font-size:10px}.button{padding:10px;font-size:10px}.overview-grid{grid-template-columns:1fr 1fr}.details-card{padding:12px}.details-card h2{font-size:12px}dl>div{flex-direction:column;gap:3px;margin:9px 0}dd{text-align:left}.firmware-current strong{font-size:26px}.metrics strong{font-size:20px}.section-heading h2{font-size:18px}.firmware-tile small.firmware-caption{display:none}.version-options{gap:7px}.firmware-tile-heading strong{font-size:10px}.firmware-revision{font-size:9px}.route{font-size:9px}.route-label{font-size:7px}.field-heading{margin-bottom:7px}.update-summary h3{font-size:13px}.update-summary p{font-size:9px}.update-summary small{font-size:7px}footer{font-size:7px}.visual-caption{display:none}}
+
+@media(max-height:600px){header{height:32px}.page-heading{padding:9px 0}h1{font-size:24px}.page-heading p{font-size:10px}.update-card{padding:12px}.update-card .section-heading{display:none}.update-layout{margin-top:0;gap:10px}.field-heading{margin-bottom:6px}.route-label{margin:7px 0 4px}.route-chip{padding:1px 4px}.version-option.firmware-tile{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-rows:auto auto;gap:4px;padding:7px}.firmware-visual{grid-row:1/3;margin:0;min-height:0;height:100%}.firmware-visual img{height:100%;min-height:0}.firmware-tile small.firmware-caption{display:none}.firmware-tile-heading{gap:2px}.firmware-tile-heading strong{font-size:10px}.firmware-revision{padding:2px;font-size:9px}.firmware-tile .media-brands{margin:0;gap:2px}.media-brand{font-size:7px;padding:2px}.update-summary p{line-height:1.4}.update-summary small{display:none}.details-card{padding:12px}.firmware-current{padding:9px 0}.firmware-current strong{font-size:24px}dl>div{margin:8px 0}.metrics{padding-top:9px}.metrics strong{font-size:22px}.printer-title{padding:10px 15px}.printer-title h2{font-size:18px}.device-footer{padding:9px 15px}.sidebar-bottom small{font-size:9px}.nav-label{margin:20px 10px 10px}.nav-item{padding-top:10px;padding-bottom:10px}footer{padding-top:8px}}
+
+@media(max-width:900px){.version-option.firmware-tile{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-rows:auto auto;gap:4px;padding:7px}.firmware-visual{grid-row:1/3;margin:0;min-height:0;height:100%}.firmware-visual img{height:100%;min-height:0}.firmware-tile small.firmware-caption{display:none}.firmware-tile-heading{gap:2px}.firmware-tile-heading strong{font-size:10px}.firmware-revision{padding:2px;font-size:9px}.firmware-tile .media-brands{margin:0;gap:2px}.media-brand{font-size:7px;padding:2px}}

@@ -4,10 +4,12 @@ using System.Threading;
 
 static partial class PrinterBridge {
     const string Dll = "cspstat64.dll";
+    const string UsbMutexName = "Local\\PrinterStudio.UsbOperation";
     [DllImport(Dll, ExactSpelling=true)] static extern int GetPrinterPortNum(IntPtr ports, ref int size);
     [DllImport(Dll, ExactSpelling=true)] static extern int CvGetStatus(int port);
     [DllImport(Dll, ExactSpelling=true)] static extern int CvSetFirmwUpdateMode(int port);
     [DllImport(Dll, ExactSpelling=true)] static extern int SetFirmwDataWrite(int port, IntPtr data, int length);
+    [DllImport(Dll, ExactSpelling=true)] static extern int CvGetCommandEX(int port, IntPtr command, int length, IntPtr response, int capacity);
     [DllImport(Dll, CharSet=CharSet.Ansi, ExactSpelling=true)] static extern int CvGetVersion(int port, [MarshalAs(UnmanagedType.VBByRefStr)] ref string value);
     [DllImport(Dll, CharSet=CharSet.Ansi, ExactSpelling=true)] static extern int CvGetSerialNo(int port, [MarshalAs(UnmanagedType.VBByRefStr)] ref string value);
     [DllImport(Dll, CharSet=CharSet.Ansi, ExactSpelling=true)] static extern int CvGetColorDataVersion(int port, [MarshalAs(UnmanagedType.VBByRefStr)] ref string value);

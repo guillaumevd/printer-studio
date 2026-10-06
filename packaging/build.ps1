@@ -26,6 +26,8 @@ try {
     }
     $distribution = Join-Path $projectRoot 'dist/Printer Studio'
     Copy-Item README.md (Join-Path $distribution 'README.md')
+    New-Item -ItemType Directory -Path (Join-Path $distribution 'docs') -Force | Out-Null
+    Copy-Item 'docs\*' (Join-Path $distribution 'docs') -Recurse -Force
     New-Item -ItemType Directory -Path (Join-Path $distribution 'runtime') -Force | Out-Null
     Copy-Item $runtimeSetup (Join-Path $distribution 'runtime/MicrosoftEdgeWebview2Setup.exe')
     Copy-Item (Join-Path $PSScriptRoot 'Install WebView2.cmd') $distribution

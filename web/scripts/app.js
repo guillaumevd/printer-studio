@@ -1,8 +1,18 @@
+import {initializeNavigation} from './components/navigation.js';
 import {request} from './api.js';
 import {$, render, notice, routeFor} from './view.js';
+initializeNavigation();
 let state = {}, target = '02.21', pending = false, lastScan = Date.now(), staged = null;
+let targetInitialized = false;
 async function refresh() {
-  try { state = await request('state'); render(state, target); }
+  try {
+    state = await request('state');
+    if (!targetInitialized && state.printers?.length) {
+      target = state.printers[0].edition === 'VG-02.21' ? 'VG-02.21' : '02.21';
+      $('target').value = target; targetInitialized = true;
+    }
+    render(state, target);
+  }
   catch (error) { notice('Connection to the local server lost. ' + error.message); $('update').disabled = true; }
 }
 async function scan() {
@@ -16,7 +26,7 @@ $('scan').addEventListener('click', scan);
 $('version-options').addEventListener('click', event => {
   const button = event.target.closest('button[data-version]');
   if (!button || button.disabled) return;
-  target = button.dataset.version; $('target').value = target; render(state, target);
+  target = button.dataset.version; targetInitialized = true; $('target').value = target; render(state, target);
 });
 $('update').addEventListener('click', () => {
   const printer = state.printers[0];
@@ -27,7 +37,7 @@ $('update').addEventListener('click', () => {
 $('ack').addEventListener('change', () => { $('confirm-start').disabled = !$('ack').checked; });
 $('confirm-start').addEventListener('click', async () => {
   $('confirm-start').disabled = true;
-  try { await request('update', staged); $('confirm').close(); await refresh(); $('activity').scrollIntoView({behavior: 'smooth'}); }
+  try { await request('update', staged); $('confirm').close(); await refresh(); }
   catch (error) { $('confirm').close(); notice(error.message); }
 });
 $('export').addEventListener('click', () => {

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from app.core.paths import VERSION
 from app.firmware.catalog import VERSIONS, HASHES
+from app.firmware.di_support import FILENAME as DI_FILENAME, SHA256 as DI_SHA256
+from app.firmware.vg_rx1hs import FILENAME as VG_FILENAME, SHA256 as VG_SHA256
 
 VENDOR_DLL_HASH = "5973b9e0c6c1e2e359389a7a4036d249956878685dd04ec6667eef4ab22a65d4"
 
@@ -27,7 +29,7 @@ def verify_bundle(folder):
         "_internal/native/PrinterBridge.exe", "_internal/native/cspstat64.dll",
         "_internal/native/checksums.json", "_internal/web/index.html",
         "_internal/web/splash.html", "_internal/web/assets/printer.ico",
-    } | {f"_internal/firmware/{version}.bin" for version in VERSIONS}
+    } | {f"_internal/firmware/{version}.bin" for version in VERSIONS} | {f"_internal/firmware/{DI_FILENAME}", f"_internal/firmware/{VG_FILENAME}"}
     if not required.issubset(entries):
         raise ValueError("Missing required bundle entries: " + ", ".join(sorted(required - entries.keys())))
     for relative, expected in entries.items():
@@ -41,4 +43,8 @@ def verify_bundle(folder):
             raise ValueError("Unrecognized firmware image: " + version)
     if file_hash(folder / "_internal/native/cspstat64.dll") != VENDOR_DLL_HASH:
         raise ValueError("Unrecognized vendor USB library")
+    if file_hash(folder / f"_internal/firmware/{DI_FILENAME}") != DI_SHA256.lower():
+        raise ValueError("Unrecognized original DI firmware image")
+    if file_hash(folder / f"_internal/firmware/{VG_FILENAME}") != VG_SHA256.lower():
+        raise ValueError("Unrecognized VG-RX1HS firmware image")
     return dict(status="passed", version=VERSION, files_verified=len(entries), usb_access=False)

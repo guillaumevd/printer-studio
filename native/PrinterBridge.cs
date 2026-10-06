@@ -10,13 +10,14 @@ static partial class PrinterBridge {
     static int Main(string[] args) {
         Console.OutputEncoding=new UTF8Encoding(false);
         try {
-            using (var access = new Mutex(false, "Local\\PrinterStudio.UsbOperation")) {
+            using (var access = new Mutex(false, UsbMutexName)) {
                 bool acquired;
                 try { acquired=access.WaitOne(0); }
                 catch (AbandonedMutexException) { acquired=true; }
                 if(!acquired) throw new Exception("Another printer operation is in progress.");
                 try {
                     if(args.Length==1 && args[0]=="probe") Probe();
+                    else if(args.Length==1 && args[0]=="restore-check") CheckDiRestore();
                     else if(args.Length==5 && args[0]=="flash") Flash(args[1],args[2],args[3],args[4]);
                     else throw new Exception("Invalid arguments");
                 } finally { access.ReleaseMutex(); }

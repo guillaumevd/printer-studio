@@ -4,7 +4,7 @@ import copy
 import json
 import threading
 import uuid
-from app.firmware.catalog import plan, verify
+from app.firmware.catalog import plan, verify, firmware_name
 from app.core.paths import DATA_ROOT
 
 ALLOWED_STATUS = {"0x00010001", "0x00010008", "0x00010010", "0x00020008"}
@@ -101,11 +101,16 @@ class PrinterService:
             for target in steps:
                 p = self.validate(self.device.probe(), serial, source)
                 path = verify(target)
-                self.emit("Starting step: " + source + " → DS-RX1 " + target)
+                destination = firmware_name(target)
+                self.emit("Starting step: " + source + " → " + destination)
                 self.device.flash(p, target, path, self.emit)
                 printers = self.device.probe()
-                self.validate(printers, serial, "DS-RX1 " + target)
-                source = "DS-RX1 " + target
+                self.validate(printers, serial, destination)
+                if target == "VG-02.21" and printers[0].get("edition") != target:
+                    raise ValueError("VG-RX1HS media edition was not confirmed after restart.")
+                if target == "02.21" and printers[0].get("edition") != "stock":
+                    raise ValueError("Stock DNP media edition was not confirmed after restart.")
+                source = destination
                 with self.state_lock:
                     self.printers = printers
                     self.job["completed"] += 1
